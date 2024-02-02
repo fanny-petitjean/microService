@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="list.css">
+</head>
+<body>
+    <!-- Inclure le menu commun ici -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/boutique">Boutique</a></li>
+                <li><a href="/inventaire">Inventaire</a></li>
+                <li><a href="/inventaire_monstre">Inventaire Monstre</a></li>
+                <li><a href="/vente">Vente</a></li>
+                <li><a href="/incubation">Incubation</a></li>
+                <li><a href="/compte">Compte</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>Boutique</h1>
+
+    <main>
+        <section class="products">
+            <div th:each="row : ${tabOeuf}">
+                <div class="row">
+
+                    <div th:each="produit : ${row}" class="product">
+                        <img src="product1.jpg" alt="Produit 1">
+                        <p>Nom du Produit 1</p>
+                        <p th:text="${produit.prix}"></p>
+                        <button onclick="acheter()">Acheter</button>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Boutique en ligne. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        function acheter() {
+            alert("Produit ajouté au panier !");
+            // Ici, vous pouvez ajouter le code pour ajouter le produit au panier ou rediriger vers une page de paiement.
+        }
+    </script>
+    <!-- Contenu de la page Boutique -->
+</body>
+</html>
