@@ -5,15 +5,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.client.RestTemplate;
 
 import org.springframework.ui.Model;
+
+import code.boutique.model.Incubateur;
+import code.boutique.model.IncubateurRepository;
 import code.boutique.model.Oeuf;
+import code.boutique.model.OeufRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
+@SessionAttributes("pseudo")
 public class controllerPages {
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private OeufRepository oeufRepository;
+    @Autowired
+    private IncubateurRepository incubateurRepository;
 
     @Autowired
     public controllerPages(RestTemplate restTemplate) {
@@ -26,31 +39,22 @@ public class controllerPages {
         return "login";
     }
 
-    
-    @GetMapping("/home")
-    public String home() {
-        return "boutique";
-    }
     @GetMapping("/boutique")
-    public String boutique(Model model) {
-          //demander db les oeufs et les incubateurs
-        // tout mettre dans la meme variable
-
-        // Exemple de données de produits
-        List<Oeuf> tabOeuf = new ArrayList<>();
-        tabOeuf.add(new Oeuf(1,12));
-        tabOeuf.add(new Oeuf(2,15));
-        tabOeuf.add(new Oeuf(2,15));
-        tabOeuf.add(new Oeuf(58,15));
-        tabOeuf.add(new Oeuf(52,15));
-        tabOeuf.add(new Oeuf(2,15));
-        tabOeuf.add(new Oeuf(3,16));
-        tabOeuf.add(new Oeuf(4,17));
-        tabOeuf.add(new Oeuf(4,17));
-        tabOeuf.add(new Oeuf(4,17));
-
-        model.addAttribute("tabOeuf", tabOeuf);
-        return "boutique";
+    public String boutique(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String pseudo = (String) session.getAttribute("pseudo");
+        System.out.println(pseudo);
+        if (pseudo != null && !pseudo.isEmpty()) {
+            model.addAttribute("pseudo", pseudo);
+            List<Oeuf> oeufs = oeufRepository.findAll(); // Récupère tous les oeufs de la base de données
+            model.addAttribute("tabOeuf", oeufs);
+            List<Incubateur> incubateurs = incubateurRepository.findAll(); // Récupère tous les oeufs de la base de données
+            model.addAttribute("tabIncubateur", incubateurs);   
+            return "boutique";
+        } else {
+            // Rediriger vers la page d'accueil si le pseudo n'est pas présent
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/inventaire")

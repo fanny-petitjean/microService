@@ -1,5 +1,7 @@
 package code.boutique;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,20 +23,34 @@ public class BoutiqueApplication {
     @Bean
     public CommandLineRunner loadData(OeufRepository repository, IncubateurRepository incubateur) {
         return (args) -> {
-            if (!repository.existsById(1)) {
+            List<Oeuf> oeufs = repository.findAll();
+            if (oeufs.isEmpty()) {
                 Oeuf oeuf = new Oeuf(1, 200);
                 repository.save(oeuf);
-                System.out.println("Oeuf added to the database.");
-            } else {
-                System.out.println("Oeuf already exists in the database.");
+                oeuf = new Oeuf(1, 200);
+                repository.save(oeuf);
+                oeuf = new Oeuf(1, 100);
+                repository.save(oeuf);
+                oeuf = new Oeuf(1, 350);
+                repository.save(oeuf);
+                oeuf = new Oeuf(1, 150);
+                repository.save(oeuf);
             }
-
-            if (!incubateur.existsByIdentifiantIncubateur(1)) {
-                Incubateur incu = new Incubateur(12);
+        
+            List<Incubateur> incubateurList = incubateur.findAll();
+            if (incubateurList.isEmpty()) {
+                Incubateur incu = new Incubateur(1200);
                 incubateur.save(incu);
-                System.out.println("Incubateur added to the database.");
-            } else {
-                System.out.println("Incubateur already exists in the database.");
+                incu = new Incubateur(1500);
+                incubateur.save(incu);
+                incu = new Incubateur(1000);
+                incubateur.save(incu);
+                incu = new Incubateur(1600);
+                incubateur.save(incu);
+                incu = new Incubateur(1200);
+                incubateur.save(incu);
+                incu = new Incubateur(1550);
+                incubateur.save(incu);
             }
         };
     }
