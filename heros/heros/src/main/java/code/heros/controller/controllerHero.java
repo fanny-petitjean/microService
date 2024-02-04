@@ -29,5 +29,18 @@ public class controllerHero {
     public String submitData(@RequestBody String data) {
         return "ça marche, normalement";
     }
+
+    @PostMapping("/enleverArgent")
+    @ResponseBody
+    public String enleverArgent(@RequestBody String data) {
+        System.out.println(data);
+        return "ça marche, normalement";
+    }
+
+    @PostMapping("/ajouterArgent")
+    @ResponseBody
+    public String ajouterArgent(@RequestBody String data) {
+        return "ça marche, normalement";
+    }
     // Ajoutez d'autres méthodes du contrôleur selon vos besoins
 }

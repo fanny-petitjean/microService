@@ -1,0 +1,84 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-BoutiqueApplication<boutique>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "code.boutique.BoutiqueApplication",
+            "projectName": "boutique",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-HerosApplication<hero>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "code.heros.HerosApplication",
+            "projectName": "hero",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-IncubateuroeufApplication<incubateuroeuf>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "code.incubateuroeuf.IncubateuroeufApplication",
+            "projectName": "incubateuroeuf",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-InventaireincubateurApplication<inventaireincubateur>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "code.inventaireincubateur.InventaireincubateurApplication",
+            "projectName": "inventaireincubateur",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-InventairemonstreApplication<inventairemonstre>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "code.inventairemonstre.InventairemonstreApplication",
+            "projectName": "inventairemonstre",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-InventaireoeufApplication<inventaireoeuf>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "code.inventaireoeuf.InventaireoeufApplication",
+            "projectName": "inventaireoeuf",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MonstreApplication<monstre>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "code.monstre.MonstreApplication",
+            "projectName": "monstre",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-StockageApplication<stockage>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "code.stockage.StockageApplication",
+            "projectName": "stockage",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

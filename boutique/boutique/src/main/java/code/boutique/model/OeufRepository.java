@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OeufRepository extends JpaRepository<Oeuf, Integer> {
     boolean existsById(Integer id);
+    boolean existsOeufBy();
 }
