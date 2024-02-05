@@ -33,7 +33,7 @@
                         <img src="product1.jpg" alt="Produit 1">
                         <p>Oeuf</p>
                         <p th:text="'Prix : ' + ${product.prix}"></p>
-                        <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${product.oeufId}__ + '\', \'' + __${product.dureeEclosion}__ + '\')'">Acheter</button>            
+                        <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${product.prix}__ + '\', \'' + __${product.dureeEclosion}__ + '\')'">Acheter</button>            
                 </div>
             </div>
             <!-- Boucle pour les incubateurs -->
@@ -42,7 +42,7 @@
                         <img src="product1.jpg" alt="Produit 1">
                         <p>Incubateur</p>
                         <p th:text="'Prix : ' + ${product.prix}"></p>
-                        <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${product.inventaireId}__ + '\')'">Acheter</button>            
+                        <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${product.prix}__ + '\')'">Acheter</button>            
                 </div>
             </div>
         </section>
