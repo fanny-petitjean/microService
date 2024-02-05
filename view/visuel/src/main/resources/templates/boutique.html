@@ -53,7 +53,7 @@
     </footer>
 
     <script>
-        function acheter(pseudo, id, produit, prix, dureeEclosion) {
+       function acheter(pseudo, id, produit, prix, dureeEclosion) {
     alert("Produit ajouté au panier !" + produit + "   " + id + "   " + prix + "   " + dureeEclosion);
 
     const microserviceUrlArgent = 'http://localhost:3002/enleverArgent';
@@ -119,8 +119,36 @@
                         if (!response.ok) {
                             throw new Error('Erreur lors de l\'appel au micro-service');
                         }
-                        // Gérer la réponse du micro-service si nécessaire
-                        console.log('Appel au micro-service réussi');
+                        var supprimerElementUrl = null;
+
+                        if (produit === "oeuf") {
+                            supprimerElementUrl =  `http://localhost:3001/enleverOeuf`;
+                        } else {
+                            supprimerElementUrl = `http://localhost:3001/enleverIncubateur`;
+                        }
+                        const requestOptionsSupprimer = {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ id: id })
+                        };
+
+                        fetch(supprimerElementUrl, requestOptionsSupprimer)
+                            .then(responseSupprimer => {
+                                if (!responseSupprimer.ok) {
+                                    throw new Error('Erreur lors de la suppression de l\'élément dans la boutique');
+                                }
+                                // L'élément a été supprimé avec succès de la boutique
+                                console.log('Elément supprimé avec succès de la boutique');
+                                // Vérifier si la réponse est OK avant de recharger la page
+                                if (responseSupprimer.status === 200) {
+                                    location.reload();
+                                }
+                            })
+                            .catch(errorSupprimer => {
+                                console.error('Erreur lors de la suppression de l\'élément dans la boutique:', errorSupprimer);
+                            });
                     })
                     .catch(error => {
                         console.error('Erreur lors de l\'appel au micro-service:', error);
@@ -131,7 +159,6 @@
             console.error('Erreur lors de l\'appel pour enlever l\'argent:', error);
         });
 }
-
 
 
     </script>

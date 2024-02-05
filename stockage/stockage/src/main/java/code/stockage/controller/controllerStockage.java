@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,22 +44,22 @@ public class controllerStockage {
         return i;
     }
 
-    @PostMapping("/enleverMonstre")
-    @ResponseBody
-    public Boolean enleverMonstre(@RequestBody Map<String, Object> formData) {
-        String id = String.valueOf(formData.get("id"));
-        Integer id2 = Integer.parseInt(id);
+  @DeleteMapping("/enleverMonstre")
+@ResponseBody
+public Boolean enleverMonstre(@RequestBody Map<String, Object> formData) {
+    String id = String.valueOf(formData.get("id"));
+    Integer id2 = Integer.parseInt(id);
 
-        Optional<StockageExterne> incubateurOptional = stockageExterneRepository.findById(id2);
+    Optional<StockageExterne> incubateurOptional = stockageExterneRepository.findById(id2);
 
-        if (incubateurOptional.isPresent()) {
-            StockageExterne incubateur = incubateurOptional.get();
-            stockageExterneRepository.delete(incubateur);
-            return true;
-        } else {
-            return false; 
-        }
-    } 
+    if (incubateurOptional.isPresent()) {
+        StockageExterne incubateur = incubateurOptional.get();
+        stockageExterneRepository.delete(incubateur);
+        return true;
+    } else {
+        return false; 
+    }
+}
 
     @PostMapping("/ajouterMonstre")
     @ResponseBody

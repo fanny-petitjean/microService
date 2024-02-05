@@ -9,6 +9,7 @@ import javax.swing.text.html.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,7 +58,7 @@ public class controllerInventaireIncubateur {
         }
     }
 
-    @PostMapping("/enleverIncubateur")
+    @DeleteMapping("/enleverIncubateur")
     @ResponseBody
     public Boolean enleverIncubateur(@RequestBody Map<String, Object> formData) {
         System.out.println(formData);
@@ -74,6 +75,7 @@ public class controllerInventaireIncubateur {
             return false; // L'incubateur avec l'ID spécifié n'a pas été trouvé
         }
     }
+
     
     @PostMapping("/listerIncubateur")
     @ResponseBody

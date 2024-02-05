@@ -52,86 +52,87 @@
     </footer>
     <script>
         function vendre(pseudo, id, produit, idProduit, dureeEclosion) {
-            var microserviceUrl = null;
-            var data = null;
-            var prix = null;
+    var microserviceUrl = null;
+    var data = null;
+    var prix = null;
 
-            if (produit == "oeuf") {
-                microserviceUrl = "http://localhost:3006/enleverOeuf";
-                data = {
-                    id: id,
-                    pseudo: pseudo,
-                    dureeEclosion: dureeEclosion,
-                };
-                prix = Math.floor(Math.random() * (500 - 100 + 1)) + 100;
-            } else {
-                microserviceUrl = "http://localhost:3004/enleverIncubateur";
-                data = {
-                    id: id,
-                    pseudo: pseudo,
-                };
-                prix = Math.floor(Math.random() * (2000 - 1000 + 1)) + 100;
+    if (produit == "oeuf") {
+        microserviceUrl = "http://localhost:3006/enleverOeuf";
+        data = {
+            id: id,
+            pseudo: pseudo,
+            dureeEclosion: dureeEclosion,
+        };
+        prix = Math.floor(Math.random() * (500 - 100 + 1)) + 100;
+    } else {
+        microserviceUrl = "http://localhost:3004/enleverIncubateur";
+        data = {
+            id: id,
+            pseudo: pseudo,
+        };
+        prix = Math.floor(Math.random() * (2000 - 1000 + 1)) + 100;
+    }
+
+    alert("Produit vendu !" + produit + "   " + id + "   " + prix + "   " + dureeEclosion);
+
+    // Configuration de la requête
+    const requestOptions = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+    // Effectuer une requête HTTP DELETE vers le micro-service
+    fetch(microserviceUrl, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de l\'appel au micro-service');
             }
+            // Récupérer le contenu de la réponse au format JSON
+            return response.json();
+        })
+        .then(result => {
+            // Vérifier si le résultat du premier appel est "true"
+            if (result) {
+                const microserviceUrl2 = 'http://localhost:3002/ajouterArgent';
+                const data2 = {
+                    id: id,
+                    prix: prix,
+                    pseudo: pseudo,
+                };
+                const requestOptions2 = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data2)
+                };
 
-            alert("Produit vendu !" + produit + "   " + id + "   " + prix + "   " + dureeEclosion);
+                // Effectuer une requête HTTP POST vers le deuxième micro-service
+                return fetch(microserviceUrl2, requestOptions2);
+            } else {
+                // Retourner une promesse résolue avec la valeur "false" si le résultat du premier appel n'est pas "true"
+                return Promise.resolve(false);
+            }
+        })
+        .then(response => {
+            // Vérifier si la réponse du deuxième appel est valide
+            if (response && response.ok) {
+                console.log('Deuxième appel réussi');
+                location.reload();
 
-            // Configuration de la requête
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            };
+            } else {
+                alert("Erreur")
+                console.error('Erreur lors du deuxième appel');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur :', error);
+        });
+}
 
-            // Effectuer une requête HTTP POST vers le micro-service
-            fetch(microserviceUrl, requestOptions)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erreur lors de l\'appel au micro-service');
-                    }
-                    // Récupérer le contenu de la réponse au format JSON
-                    return response.json();
-                })
-                .then(result => {
-                    // Vérifier si le résultat du premier appel est "true"
-                    if (result) {
-                        const microserviceUrl2 = 'http://localhost:3002/ajouterArgent';
-                        const data2 = {
-                            id: id,
-                            prix: prix,
-                            pseudo: pseudo,
-                        };
-                        const requestOptions2 = {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data2)
-                        };
-
-                        // Effectuer une requête HTTP POST vers le deuxième micro-service
-                        return fetch(microserviceUrl2, requestOptions2);
-                    } else {
-                        // Retourner une promesse résolue avec la valeur "false" si le résultat du premier appel n'est pas "true"
-                        return Promise.resolve(false);
-                    }
-                })
-                .then(response => {
-                    // Vérifier si la réponse du deuxième appel est valide
-                    if (response && response.ok) {
-                        alert("Vous avez déjà 6 incubateurs")
-                        console.log('Deuxième appel réussi');
-                        // Gérer la réponse du deuxième appel si nécessaire
-                    } else {
-                        alert("Erreur")
-                        console.error('Erreur lors du deuxième appel');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erreur :', error);
-                });
-        }
 
     </script>
 </body>
