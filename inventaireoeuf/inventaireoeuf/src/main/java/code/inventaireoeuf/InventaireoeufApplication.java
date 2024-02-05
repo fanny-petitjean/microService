@@ -1,5 +1,7 @@
 package code.inventaireoeuf;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +20,9 @@ public class InventaireoeufApplication {
 	@Bean
     public CommandLineRunner loadData(InventaireOeufRepository repository) {
         return (args) -> {
-            if (!repository.existsById(1)) {
+			List<InventaireOeuf> inventaireOeuf = repository.findAll();
+
+            if (inventaireOeuf.isEmpty()) {
 				InventaireOeuf oeuf = new InventaireOeuf(1,"Jean",12);
 				repository.save(oeuf);
 				System.out.println("Inventaire Oeuf added to the database.");

@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventaire Monstre</title>
+    <title>Inventaire</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="list.css">
+    <link rel="stylesheet" type="text/css" href="list2.css">
 
 </head>
 <body>
@@ -13,17 +13,19 @@
     <header>
         <nav>
             <ul>
+                <li th:text="'Argent : ' + ${tabHero.argent}"></li>
                 <li><a href="/boutique">Boutique</a></li>
                 <li><a href="/inventaire">Inventaire</a></li>
                 <li><a href="/inventaire_monstre">Inventaire Monstre</a></li>
-                <li><a href="/vente">Vente</a></li>
+                <li><a href="/stockage">Stockage</a></li>
                 <li><a href="/incubation">Incubation</a></li>
                 <li><a href="/compte">Compte</a></li>
             </ul>
         </nav>
     </header>
 
-    <h1>Inventaire Monstre</h1>
+    <h1>Inventaire</h1>
+
     <main>
         <section class="products">
             <!-- Boucle pour les oeufs -->
@@ -31,7 +33,8 @@
                 <div class="product">
                         <img src="product1.jpg" alt="Produit 1">
                         <p>Oeuf</p>
-                        <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${produit.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${produit.oeufId}__ + '\', \'' + __${produit.dureeEclosion}__ + '\')'">Vendre</button>            
+                        <p th:text="'Durée éclosion : ' + ${product.dureeEclosion}"></p>
+                        <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${product.oeufId}__ + '\', \'' + __${product.dureeEclosion}__ + '\')'">Vendre</button>            
                 </div>
             </div>
             <!-- Boucle pour les incubateurs -->
@@ -39,11 +42,14 @@
                 <div class="product">
                         <img src="product1.jpg" alt="Produit 1">
                         <p>Incubateur</p>
-                        <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${produit.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${produit.inventaireId}__ + '\')'">Vendre</button>            
+                        <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${product.incubateurId}__ + '\')'">Vendre</button>            
                 </div>
             </div>
         </section>
     </main>
+    <footer>
+        <p>&copy; 2024 Boutique en ligne. Tous droits réservés.</p>
+    </footer>
     <script>
         function vendre(pseudo, id, produit, idProduit, dureeEclosion) {
             var microserviceUrl = null;
@@ -63,14 +69,11 @@
                     id: id,
                     pseudo: pseudo,
                 };
-                prix = Math.floor(Math.random() * (1000 - 2000 + 1)) + 100;
+                prix = Math.floor(Math.random() * (2000 - 1000 + 1)) + 100;
 
             }    
 
             alert("Produit vendu !"+ produit + "   " + id + "   "  + prix +"   " + dureeEclosion);
-
-
-
 
                     
             // Configuration de la requête

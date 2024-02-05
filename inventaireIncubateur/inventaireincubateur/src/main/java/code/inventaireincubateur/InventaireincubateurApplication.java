@@ -1,5 +1,7 @@
 package code.inventaireincubateur;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +20,9 @@ public class InventaireincubateurApplication {
 	@Bean
     public CommandLineRunner loadData(InventaireIncubateurRepository incubateur) {
         return (args) -> {
-            if (!incubateur.existsById(1)) {
+			List<InventaireIncubateur> inventaireIncubateur = incubateur.findAll();
+
+            if (inventaireIncubateur.isEmpty()) {
 				InventaireIncubateur iv = new InventaireIncubateur(1,"jean");
 				incubateur.save(iv);
 				System.out.println("Inventaire Incubateur added to the database.");

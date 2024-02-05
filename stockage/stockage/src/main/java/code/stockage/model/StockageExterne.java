@@ -15,9 +15,9 @@ public class StockageExterne {
     private Integer id;
     private Integer identifiantMonstre;
 
-    private Integer identifiantHero;
+    private String identifiantHero;
 
-    private String nomMonstre;
+    private String name;
     private String type;
     private int niveau;
     private int xp;
@@ -27,8 +27,8 @@ public class StockageExterne {
         // Constructeur par défaut nécessaire pour JPA
     }
 
-    public StockageExterne(Integer identifiantMonstre, String nomMonstre, String type, int niveau, int xp, Integer identifiantHero) {
-        this.nomMonstre = nomMonstre;
+    public StockageExterne(Integer identifiantMonstre, String nomMonstre, String type, int niveau, int xp, String identifiantHero) {
+        this.name = nomMonstre;
         this.identifiantMonstre = identifiantMonstre;
         this.type = type;
         this.niveau = niveau;
@@ -37,7 +37,7 @@ public class StockageExterne {
     }
 
     public Integer getId() {
-        return identifiantMonstre;
+        return id;
     }
 
     public void setId(Integer id) {
@@ -51,12 +51,12 @@ public class StockageExterne {
         this.identifiantMonstre = identifiantMonstre;
     }
 
-    public String getNomMonstre() {
-        return nomMonstre;
+    public String getName() {
+        return name;
     }
 
-    public void setNomMonstre(String nomMonstre) {
-        this.nomMonstre = nomMonstre;
+    public void setName(String nomMonstre) {
+        this.name = nomMonstre;
     }
 
     public String getType() {
@@ -83,11 +83,11 @@ public class StockageExterne {
         this.xp = xp;
     }
 
-    public Integer getHero() {
+    public String getHero() {
         return identifiantHero;
     }
 
-    public void setHero(Integer hero) {
+    public void setHero(String hero) {
         this.identifiantHero = hero;
     }
 }

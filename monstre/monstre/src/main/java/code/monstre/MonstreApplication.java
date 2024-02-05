@@ -1,5 +1,7 @@
 package code.monstre;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +20,9 @@ public class MonstreApplication {
 	@Bean
     public CommandLineRunner loadData(MonstreRepository repository) {
         return (args) -> {
-            if (!repository.existsById(1)) {
+			List<Monstre> monstreList = repository.findAll();
+
+            if (monstreList.isEmpty()) {
 				Monstre monstre = new Monstre("Aquador","Aquatique",15,12);
 				repository.save(monstre);
 				System.out.println("Monstre added to the database.");

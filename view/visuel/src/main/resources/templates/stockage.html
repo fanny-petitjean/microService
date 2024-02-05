@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventaire Monstre</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="list.css">
+
+</head>
+<body>
+    <!-- Inclure le menu commun ici -->
+    <header>
+        <nav>
+            <ul>
+                <li th:text="'Argent : ' + ${tabHero.argent}"></li>
+                <li><a href="/boutique">Boutique</a></li>
+                <li><a href="/inventaire">Inventaire</a></li>
+                <li><a href="/inventaire_monstre">Inventaire Monstre</a></li>
+                <li><a href="/stockage">Stockage</a></li>
+                <li><a href="/incubation">Incubation</a></li>
+                <li><a href="/compte">Compte</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>Stockage</h1>
+    <main>
+        <section class="products">
+            <div th:each="product : ${tabMonstre}">
+                <div class="product">
+                        <img src="product1.jpg" alt="Produit 1">
+                        <p th:text="'Name : ' + ${product.name}"></p>
+                        <p th:text="'XP : ' + ${product.xp} "></p>
+                        <p th:text="'Type : ' + ${product.type}"></p>
+                        <p th:text="'Niveau : ' + ${product.niveau}"></p>
+                        <p th:text="'product : ' + ${product.id}"></p>
+
+                        <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + '\', \'' + __${product.name}__ + '\', \'' +  '\')'">Vendre</button>
+                        <button th:onclick="'inventaire(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __${product.name}__ + '\',\'' + __${product.xp}__ + '\',\'' + __${product.type}__ + '\',\'' + __${product.niveau}__ + '\',\'' + __${product.identifiantMonstre}__ + '\')'">Mettre dans inventaire</button>            
+            
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Boutique en ligne. Tous droits réservés.</p>
+    </footer>
+    <script>
+        function vendre(pseudo, id, name) {
+            var microserviceUrl = null;
+            var data = null;
+            var prix =null;
+            microserviceUrl = "http://localhost:3005/enleverMonstre";
+            data = {
+                id: id,
+                pseudo: pseudo,
+            };
+            prix = Math.floor(Math.random() * (3500 - 1500 + 1)) + 100;
+             
+
+            alert("Produit vendu !" + "   " + id + "   "  + prix +"   ");
+
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+
+            fetch(microserviceUrl, requestOptions)
+                .then(response => {
+                    if (!response) {
+                        throw new Error('Erreur lors de l\'appel au micro-service');
+                    }
+                    const microserviceUrl2 ='http://localhost:3002/ajouterArgent';
+                    const data2 = {
+                        id: id,
+                        prix:prix,
+                        pseudo: pseudo,
+                    };
+                    const requestOptions2 = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json' // Modifier le type de contenu ici
+                        },
+                        body: JSON.stringify(data2)
+                    };
+
+                    // Effectuer une requête HTTP POST vers le micro-service
+                    fetch(microserviceUrl2, requestOptions2)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de l\'appel au micro-service');
+                            }
+                            // Gérer la réponse du micro-service si nécessaire
+                            console.log('Appel au micro-service réussi');
+                        })
+                        .catch(error => {
+                            console.error('Erreur :', error);
+                        });
+                            // Gérer la réponse du micro-service si nécessaire
+                            console.log('Appel au micro-service réussi');
+                        })
+                .catch(error => {
+                    console.error('Erreur :', error);
+                });
+        }
+
+        function inventaire(pseudo, id, name, xp, type, niveau, identifiantMonstre) {
+            var microserviceUrl = null;
+            var data = null;
+            var prix =null;
+            microserviceUrl = "http://localhost:3005/ajouterMonstre";
+            data = {
+                pseudo: pseudo,
+                name:name,
+                xp:xp,
+                type:type,
+                niveau:niveau,
+                identifiantMonstre: identifiantMonstre,
+            };
+
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+            fetch(microserviceUrl, requestOptions)
+                .then(response => {
+                    if (!response) {
+                        throw new Error('Erreur lors de l\'appel au micro-service');
+                    }
+                    const microserviceUrl2 ='http://localhost:3008/enleverMonstre';
+                    const data2 = {
+                        id: id,
+                        pseudo: pseudo,
+                    };
+                    console.log("iiiiid" + id);
+                    const requestOptions2 = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json' // Modifier le type de contenu ici
+                        },
+                        body: JSON.stringify(data2)
+                    };
+
+                    fetch(microserviceUrl2, requestOptions2)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de l\'appel au micro-service');
+                            }
+                            // Gérer la réponse du micro-service si nécessaire
+                            console.log('Appel au micro-service réussi');
+                        })
+                        .catch(error => {
+                            console.error('Erreur :', error);
+                        });
+                            // Gérer la réponse du micro-service si nécessaire
+                            console.log('Appel au micro-service réussi');
+                        })
+                .catch(error => {
+                    console.error('Erreur :', error);
+                });
+
+            
+           
+        }
+    </script>
+</body>
+</html>

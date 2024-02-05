@@ -104,6 +104,8 @@ public class controllerPages {
 
             // Récupérer la liste d'objets de la réponse
             List<Object> tabOeuf = responseEntityOeuf.getBody();
+            System.out.println(tabOeuf);
+            System.out.println(tabIncubateur);
             // Faites quelque chose avec la liste d'objets, par exemple, les ajouter à un modèle
             model.addAttribute("tabOeuf", tabOeuf); 
             // Faites quelque chose avec la liste d'objets, par exemple, les ajouter à un modèle
@@ -137,6 +139,7 @@ public class controllerPages {
 
             // Récupérer la liste d'objets de la réponse
             List<Object> tabMonstre = responseEntityOeuf.getBody();
+            
             // Faites quelque chose avec la liste d'objets, par exemple, les ajouter à un modèle
             model.addAttribute("tabMonstre", tabMonstre); 
             model.addAttribute("pseudo", pseudo);

@@ -38,17 +38,5 @@ public class controllerLogin {
 
             return savedHero;
         }
-        //vérifier dans la db l existance du perso
-        // si existe pas => création
-        //sinon connexion
-        /*String pseudo = formData.getFirst("pseudo");
-        try {
-            heroService.verifyUser(pseudo);
-            System.out.println("testffdd");
-            return ResponseEntity.ok().body("Bienvenue " + pseudo);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utilisateur non trouvé");
-        }*/
     }
-
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incubation</title>
+    <title>Compte</title>
     <link rel="stylesheet" href="styles.css">
 
 </head>
@@ -15,14 +15,28 @@
                 <li><a href="/boutique">Boutique</a></li>
                 <li><a href="/inventaire">Inventaire</a></li>
                 <li><a href="/inventaire_monstre">Inventaire Monstre</a></li>
-                <li><a href="/vente">Vente</a></li>
+                <li><a href="/stockage">Stockage</a></li>
                 <li><a href="/incubation">Incubation</a></li>
                 <li><a href="/compte">Compte</a></li>
             </ul>
         </nav>
     </header>
 
-    <h1>Incubation</h1>
-    <!-- Contenu de la page Incubation -->
+    <h1>Compte</h1>
+<main>
+
+    <section class="products">
+            <!-- Boucle pour les oeufs -->
+            <div>
+                <div class="product">
+                        <p th:text="'Pseudo : ' + ${tabHero.name}"></p>
+                        <p th:text="'Argent : ' + ${tabHero.argent}"></p>
+                </div>
+            </div>
+        </section>
+</main>   
+<footer>
+    <p>&copy; 2024 Boutique en ligne. Tous droits réservés.</p>
+</footer> 
 </body>
 </html>
