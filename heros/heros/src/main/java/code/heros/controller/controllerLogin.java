@@ -28,11 +28,15 @@ public class controllerLogin {
         if(hero.isEmpty()){
             Hero her1 = new Hero(250000,formData.getFirst("pseudo"));
             System.out.println(her1);
-            return her1;
+            Hero savedHero = heroRepository.save(her1); // Sauvegarder le nouvel utilisateur dans la base de données
+
+            return savedHero;
         }else{
             Hero hero1 = hero.get();
             System.out.println(hero1);
-            return hero1;
+            Hero savedHero = heroRepository.save(hero1); // Sauvegarder le nouvel utilisateur dans la base de données
+
+            return savedHero;
         }
         //vérifier dans la db l existance du perso
         // si existe pas => création

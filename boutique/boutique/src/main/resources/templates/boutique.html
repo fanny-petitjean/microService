@@ -45,7 +45,7 @@
                         <img src="product1.jpg" alt="Produit 1">
                         <p>Incubateur</p>
                         <p th:text="${produit.prix}"></p>
-                        <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${produit.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${produit.prix}__ + '\')'">Acheter</button>            
+                        <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${produit.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${produit.prix}__ + '\')'">Acheter</button>            
                     </div>
                 </div>
             </div>
@@ -63,7 +63,6 @@
 
             var microserviceUrl = null;
             var data = null;
-            console.log(produit)
             if(produit=="oeuf"){
                 microserviceUrl = "http://localhost:3006/ajouterOeuf";
                 data = {
@@ -72,14 +71,14 @@
                     dureeEclosion:dureeEclosion,
                 };
             }else{
-                 microserviceUrl = "http://localhost:3004/baisserArgent"; 
+                 microserviceUrl = "http://localhost:3004/ajouterIncubateur"; 
                  data = {
                     id: id,
                     pseudo: pseudo,
-                    dureeEclosion:dureeEclosion,
                 };
-            }            
+            }    
 
+                    
             // Configuration de la requête
             const requestOptions = {
                 method: 'POST',
@@ -88,16 +87,14 @@
                 },
                 body: JSON.stringify(data)
             };
-            console.log("ta mere")
-            console.log(microserviceUrl)
+
             // Effectuer une requête HTTP POST vers le micro-service
             fetch(microserviceUrl, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Erreur lors de l\'appel au micro-service');
                     }
-                    console.log("chebal")
-                    const microserviceUrl2 = 'http://localhost:3002/enleverArgent';
+                    const microserviceUrl2 ='http://localhost:3002/enleverArgent';
                     const data2 = {
                         id: id,
                         prix:prix,
@@ -106,12 +103,10 @@
                     const requestOptions2 = {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json' // Modifier le type de contenu ici
                         },
-                        body: JSON.stringify(data)
+                        body: JSON.stringify(data2)
                     };
-
-
 
                     // Effectuer une requête HTTP POST vers le micro-service
                     fetch(microserviceUrl2, requestOptions2)
