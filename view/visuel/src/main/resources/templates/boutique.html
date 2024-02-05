@@ -54,78 +54,86 @@
 
     <script>
         function acheter(pseudo, id, produit, prix, dureeEclosion) {
-            alert("Produit ajouté au panier !"+ produit + "   " + id+ "   " + prix + "   " + dureeEclosion);
+    alert("Produit ajouté au panier !" + produit + "   " + id + "   " + prix + "   " + dureeEclosion);
 
-            var microserviceUrl = null;
-            var data = null;
-            if(produit=="oeuf"){
-                microserviceUrl = "http://localhost:3006/ajouterOeuf";
-                data = {
-                    id: id,
-                    pseudo: pseudo,
-                    dureeEclosion:dureeEclosion,
-                };
-            }else{
-                 microserviceUrl = "http://localhost:3004/ajouterIncubateur"; 
-                 data = {
-                    id: id,
-                    pseudo: pseudo,
-                };
-            }    
+    const microserviceUrlArgent = 'http://localhost:3002/enleverArgent';
+    const dataArgent = {
+        id: id,
+        prix: prix,
+        pseudo: pseudo,
+    };
 
-                    
-            // Configuration de la requête
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            };
+    const requestOptionsArgent = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataArgent)
+    };
 
-            // Effectuer une requête HTTP POST vers le micro-service
-            fetch(microserviceUrl, requestOptions)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erreur lors de l\'appel au micro-service');
-                    }
-                    const microserviceUrl2 ='http://localhost:3002/enleverArgent';
-                    const data2 = {
+    // Effectuer une requête HTTP POST pour enlever l'argent
+    fetch(microserviceUrlArgent, requestOptionsArgent)
+        .then(responseArgent => {
+            if (!responseArgent.ok) {
+                throw new Error('Erreur lors de l\'appel pour enlever l\'argent');
+            }
+            // Récupérer le contenu de la réponse au format JSON
+            return responseArgent.json();
+        })
+        .then(dataArgent => {
+            // Vérifier si la réponse est "false"
+            if (dataArgent === false) {
+                alert("L'opération de paiement a échoué");
+            } else {
+                // L'opération de paiement a réussi, effectuer l'opération d'achat
+                let microserviceUrl = null;
+                let data = null;
+
+                if (produit === "oeuf") {
+                    microserviceUrl = "http://localhost:3006/ajouterOeuf";
+                    data = {
                         id: id,
-                        prix:prix,
+                        pseudo: pseudo,
+                        dureeEclosion: dureeEclosion,
+                    };
+                } else {
+                    microserviceUrl = "http://localhost:3004/ajouterIncubateur";
+                    data = {
+                        id: id,
                         pseudo: pseudo,
                     };
-                    const requestOptions2 = {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json' // Modifier le type de contenu ici
-                        },
-                        body: JSON.stringify(data2)
-                    };
+                }
 
-                    // Effectuer une requête HTTP POST vers le micro-service
-                    fetch(microserviceUrl2, requestOptions2)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Erreur lors de l\'appel au micro-service');
-                            }
-                            // Gérer la réponse du micro-service si nécessaire
-                            console.log('Appel au micro-service réussi');
-                        })
-                        .catch(error => {
-                            console.error('Erreur :', error);
-                        });
-                            // Gérer la réponse du micro-service si nécessaire
-                            console.log('Appel au micro-service réussi');
-                        })
-                .catch(error => {
-                    console.error('Erreur :', error);
-                });
+                // Configuration de la requête
+                const requestOptions = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                };
 
-            
-           
-        }
+                // Effectuer une requête HTTP POST pour ajouter l'élément
+                fetch(microserviceUrl, requestOptions)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de l\'appel au micro-service');
+                        }
+                        // Gérer la réponse du micro-service si nécessaire
+                        console.log('Appel au micro-service réussi');
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de l\'appel au micro-service:', error);
+                    });
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'appel pour enlever l\'argent:', error);
+        });
+}
+
+
+
     </script>
-    <!-- Contenu de la page Boutique -->
 </body>
 </html>

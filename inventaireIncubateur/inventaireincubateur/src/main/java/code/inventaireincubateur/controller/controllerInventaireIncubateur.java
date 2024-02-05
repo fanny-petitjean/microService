@@ -47,6 +47,7 @@ public class controllerInventaireIncubateur {
         Integer id2 = Integer.parseInt(id);
         List<InventaireIncubateur> i = inventaireIncubateurRepo.findByIdentifiantHero(pseudo);
         System.out.println(i);
+        System.out.println("siiize" + i.size());
         if(i.size()<6){
             InventaireIncubateur invent = new InventaireIncubateur(id2,pseudo);
             inventaireIncubateurRepo.save(invent);

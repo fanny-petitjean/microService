@@ -31,11 +31,11 @@ public class InventaireIncubateur {
         this.id = id;
     }
 
-    public Integer getInventaireId() {
+    public Integer getIdentifiantIncubateur() {
         return identifiantIncubateur;
     }
 
-    public void setIventaireId(Integer identifiantIncubateur) {
+    public void setIdentifiantIncubateur(Integer identifiantIncubateur) {
         this.identifiantIncubateur = identifiantIncubateur;
     }
 

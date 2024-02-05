@@ -30,7 +30,7 @@
             <div th:each="product : ${tabMonstre}">
                 <div class="product">
                         <img src="product1.jpg" alt="Produit 1">
-                        <p th:text="'Name : ' + ${product.name}"></p>
+                        <p th:text="'Nom : ' + ${product.name}"></p>
                         <p th:text="'XP : ' + ${product.xp} "></p>
                         <p th:text="'Type : ' + ${product.type}"></p>
                         <p th:text="'Niveau : ' + ${product.niveau}"></p>
@@ -48,16 +48,15 @@
         function vendre(pseudo, id, name) {
             var microserviceUrl = null;
             var data = null;
-            var prix =null;
+            var prix = null;
             microserviceUrl = "http://localhost:3005/enleverMonstre";
             data = {
                 id: id,
                 pseudo: pseudo,
             };
             prix = Math.floor(Math.random() * (3500 - 1500 + 1)) + 100;
-             
 
-            alert("Produit vendu !" + "   " + id + "   "  + prix +"   ");
+            alert("Produit vendu !" + "   " + id + "   " + prix + "   ");
 
             const requestOptions = {
                 method: 'POST',
@@ -67,44 +66,55 @@
                 body: JSON.stringify(data)
             };
 
+            // Effectuer une requête HTTP POST vers le premier micro-service
             fetch(microserviceUrl, requestOptions)
                 .then(response => {
-                    if (!response) {
+                    if (!response.ok) {
                         throw new Error('Erreur lors de l\'appel au micro-service');
                     }
-                    const microserviceUrl2 ='http://localhost:3002/ajouterArgent';
-                    const data2 = {
-                        id: id,
-                        prix:prix,
-                        pseudo: pseudo,
-                    };
-                    const requestOptions2 = {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json' // Modifier le type de contenu ici
-                        },
-                        body: JSON.stringify(data2)
-                    };
+                    // Récupérer le contenu de la réponse au format JSON
+                    return response.json();
+                })
+                .then(result => {
+                    // Vérifier si le résultat du premier appel est "true"
+                    if (result) {
+                        const microserviceUrl2 = 'http://localhost:3002/ajouterArgent';
+                        const data2 = {
+                            id: id,
+                            prix: prix,
+                            pseudo: pseudo,
+                        };
+                        const requestOptions2 = {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data2)
+                        };
 
-                    // Effectuer une requête HTTP POST vers le micro-service
-                    fetch(microserviceUrl2, requestOptions2)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Erreur lors de l\'appel au micro-service');
-                            }
-                            // Gérer la réponse du micro-service si nécessaire
-                            console.log('Appel au micro-service réussi');
-                        })
-                        .catch(error => {
-                            console.error('Erreur :', error);
-                        });
-                            // Gérer la réponse du micro-service si nécessaire
-                            console.log('Appel au micro-service réussi');
-                        })
+                        // Effectuer une requête HTTP POST vers le deuxième micro-service
+                        fetch(microserviceUrl2, requestOptions2)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Erreur lors de l\'appel au micro-service');
+                                }
+                                // Gérer la réponse du deuxième micro-service si nécessaire
+                                console.log('Deuxième appel au micro-service réussi');
+                            })
+                            .catch(error => {
+                                console.error('Erreur lors du deuxième appel :', error);
+                            });
+                    } else {
+                        // Le premier appel n'a pas retourné "true"
+                        alert("erreur")
+                        console.error('Le premier appel au micro-service a échoué');
+                    }
+                })
                 .catch(error => {
-                    console.error('Erreur :', error);
+                    console.error('Erreur lors du premier appel :', error);
                 });
         }
+
 
         function stocker(pseudo, id, name, xp, type, niveau, identifiantMonstre) {
             var microserviceUrl = null;

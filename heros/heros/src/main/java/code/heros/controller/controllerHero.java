@@ -41,9 +41,13 @@ public class controllerHero {
         if (optionalHero.isPresent()) {
             Hero hero = optionalHero.get();
             Integer argent = hero.getArgent() - prix;
-            hero.setArgent(argent);
-            heroRepository.save(hero);
-            return true;
+            if(argent < 0){
+                return false;
+            }else {
+                hero.setArgent(argent);
+                heroRepository.save(hero);
+                return true;
+            }
         } else {
             return false;
         }
