@@ -19,7 +19,7 @@ public class InventaireincubateurApplication {
     public CommandLineRunner loadData(InventaireIncubateurRepository incubateur) {
         return (args) -> {
             if (!incubateur.existsById(1)) {
-				InventaireIncubateur iv = new InventaireIncubateur(1,1);
+				InventaireIncubateur iv = new InventaireIncubateur(1,"jean");
 				incubateur.save(iv);
 				System.out.println("Inventaire Incubateur added to the database.");
 			} else {

@@ -11,10 +11,10 @@ public class InventaireOeuf {
 
     private Integer identifiantOeuf;
 
-    private Integer identifiantHero;
+    private String identifiantHero;
     private Integer dureeEclosion;
 
-    public InventaireOeuf(Integer identifiantOeuf, Integer identifiantHero, Integer duree) {
+    public InventaireOeuf(Integer identifiantOeuf, String identifiantHero, Integer duree) {
         this.identifiantHero = identifiantHero;
         this.dureeEclosion = duree;
         this.identifiantOeuf = identifiantOeuf;
@@ -47,11 +47,11 @@ public class InventaireOeuf {
         this.dureeEclosion = dureeEclosion;
     }
 
-    public Integer getHeroId() {
+    public String getHeroId() {
         return identifiantHero;
     }
 
-    public void setIdentifiantHero(Integer heroId) {
+    public void setIdentifiantHero(String heroId) {
         this.identifiantHero = heroId;
     }
 }
