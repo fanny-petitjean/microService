@@ -26,33 +26,103 @@
     <h1>Inventaire Monstre</h1>
     <main>
         <section class="products">
-            <div class="row">
+            <!-- Boucle pour les oeufs -->
+            <div th:each="product : ${tabOeuf}">
                 <div class="product">
-                    <img src="product1.jpg" alt="Produit 1">
-                    <p>Nom du Produit 1</p>
-                    <p>Prix: 10€</p>
-                    <button onclick="acheter()">Acheter</button>
-                </div>
-                <div class="product">
-                    <img src="product2.jpg" alt="Produit 2">
-                    <p>Nom du Produit 2</p>
-                    <p>Prix: 15€</p>
-                </div>
-                <div class="product">
-                    <img src="product3.jpg" alt="Produit 3">
-                    <p>Nom du Produit 3</p>
-                    <p>Prix: 20€</p>
-                </div>
-                <div class="product">
-                    <img src="product4.jpg" alt="Produit 4">
-                    <p>Nom du Produit 4</p>
-                    <p>Prix: 25€</p>
+                        <img src="product1.jpg" alt="Produit 1">
+                        <p>Oeuf</p>
+                        <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${produit.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${produit.oeufId}__ + '\', \'' + __${produit.dureeEclosion}__ + '\')'">Vendre</button>            
                 </div>
             </div>
-            <div class="row">
-                <!-- Ajoutez d'autres produits ici si nécessaire -->
+            <!-- Boucle pour les incubateurs -->
+            <div th:each="product : ${tabIncubateur}">
+                <div class="product">
+                        <img src="product1.jpg" alt="Produit 1">
+                        <p>Incubateur</p>
+                        <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${produit.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${produit.inventaireId}__ + '\')'">Vendre</button>            
+                </div>
             </div>
         </section>
     </main>
+    <script>
+        function vendre(pseudo, id, produit, idProduit, dureeEclosion) {
+            var microserviceUrl = null;
+            var data = null;
+            var prix =null;
+            if(produit=="oeuf"){
+                microserviceUrl = "http://localhost:3006/enleverOeuf";
+                data = {
+                    id: id,
+                    pseudo: pseudo,
+                    dureeEclosion:dureeEclosion,
+                };
+                prix = Math.floor(Math.random() * (500 - 100 + 1)) + 100;
+            }else{
+                 microserviceUrl = "http://localhost:3004/enleverIncubateur"; 
+                 data = {
+                    id: id,
+                    pseudo: pseudo,
+                };
+                prix = Math.floor(Math.random() * (1000 - 2000 + 1)) + 100;
+
+            }    
+
+            alert("Produit vendu !"+ produit + "   " + id + "   "  + prix +"   " + dureeEclosion);
+
+
+
+
+                    
+            // Configuration de la requête
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+            // Effectuer une requête HTTP POST vers le micro-service
+            fetch(microserviceUrl, requestOptions)
+                .then(response => {
+                    if (!response) {
+                        throw new Error('Erreur lors de l\'appel au micro-service');
+                    }
+                    const microserviceUrl2 ='http://localhost:3002/ajouterArgent';
+                    const data2 = {
+                        id: id,
+                        prix:prix,
+                        pseudo: pseudo,
+                    };
+                    const requestOptions2 = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json' // Modifier le type de contenu ici
+                        },
+                        body: JSON.stringify(data2)
+                    };
+
+                    // Effectuer une requête HTTP POST vers le micro-service
+                    fetch(microserviceUrl2, requestOptions2)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de l\'appel au micro-service');
+                            }
+                            // Gérer la réponse du micro-service si nécessaire
+                            console.log('Appel au micro-service réussi');
+                        })
+                        .catch(error => {
+                            console.error('Erreur :', error);
+                        });
+                            // Gérer la réponse du micro-service si nécessaire
+                            console.log('Appel au micro-service réussi');
+                        })
+                .catch(error => {
+                    console.error('Erreur :', error);
+                });
+
+            
+           
+        }
+    </script>
 </body>
 </html>

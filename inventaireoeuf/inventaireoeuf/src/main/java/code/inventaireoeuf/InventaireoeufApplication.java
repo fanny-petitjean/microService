@@ -19,7 +19,7 @@ public class InventaireoeufApplication {
     public CommandLineRunner loadData(InventaireOeufRepository repository) {
         return (args) -> {
             if (!repository.existsById(1)) {
-				InventaireOeuf oeuf = new InventaireOeuf(1,1,12);
+				InventaireOeuf oeuf = new InventaireOeuf(1,"Jean",12);
 				repository.save(oeuf);
 				System.out.println("Inventaire Oeuf added to the database.");
 			} else {

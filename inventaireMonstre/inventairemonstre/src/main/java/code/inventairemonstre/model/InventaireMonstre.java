@@ -18,9 +18,9 @@ public class InventaireMonstre {
 
     private Integer xp;
 
-    private Integer identifiantHero;
+    private String identifiantHero;
 
-    public InventaireMonstre(Integer identifiantMonstre, String name, String type, Integer niveau, Integer xp, Integer identifiantHero) {
+    public InventaireMonstre(Integer identifiantMonstre, String name, String type, Integer niveau, Integer xp, String identifiantHero) {
         this.identifiantHero = identifiantHero;
         this.name = name;
         this.type = type;
@@ -80,11 +80,11 @@ public class InventaireMonstre {
         this.xp = xp;
     }
 
-    public Integer getHeroId() {
+    public String getHeroId() {
         return identifiantHero;
     }
 
-    public void setIdentifiantHero(Integer heroId) {
+    public void setIdentifiantHero(String heroId) {
         this.identifiantHero = heroId;
     }
 }

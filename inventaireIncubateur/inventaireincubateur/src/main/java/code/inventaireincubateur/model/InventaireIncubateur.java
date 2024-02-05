@@ -1,5 +1,7 @@
 package code.inventaireincubateur.model;
 
+import javax.print.DocFlavor.STRING;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,9 +13,9 @@ public class InventaireIncubateur {
 
     private Integer identifiantIncubateur;
 
-    private Integer identifiantHero;
+    private String identifiantHero;
 
-    public InventaireIncubateur(Integer identifiantIncubateur, Integer identifiantHero) {
+    public InventaireIncubateur(Integer identifiantIncubateur, String identifiantHero) {
         this.identifiantHero = identifiantHero;
         this.identifiantIncubateur = identifiantIncubateur;
     }
@@ -37,11 +39,11 @@ public class InventaireIncubateur {
         this.identifiantIncubateur = identifiantIncubateur;
     }
 
-    public Integer getHeroId() {
+    public String getHeroId() {
         return identifiantHero;
     }
 
-    public void setIdentifiantHero(Integer heroId) {
+    public void setIdentifiantHero(String heroId) {
         this.identifiantHero = heroId;
     }
 }

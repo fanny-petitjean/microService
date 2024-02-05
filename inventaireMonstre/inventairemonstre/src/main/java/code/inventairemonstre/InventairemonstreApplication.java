@@ -19,7 +19,7 @@ public class InventairemonstreApplication {
     public CommandLineRunner loadData(InventaireMonstreRepository repository) {
         return (args) -> {
             if (!repository.existsById(1)) {
-				InventaireMonstre oeuf = new InventaireMonstre(1,"test","Test",15,15,2);
+				InventaireMonstre oeuf = new InventaireMonstre(1,"test","Test",15,15,"Jean");
 				repository.save(oeuf);
 				System.out.println("Oeuf added to the database.");
 			} else {
