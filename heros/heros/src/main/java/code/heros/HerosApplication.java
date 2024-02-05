@@ -1,5 +1,7 @@
 package code.heros;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +20,8 @@ public class HerosApplication {
 	@Bean
     public CommandLineRunner loadData(HeroRepository repository) {
         return (args) -> {
-            if (!repository.existsById(1)) {
+			List<Hero> hero = repository.findAll();
+            if (hero.isEmpty()) {
 				Hero oeuf = new Hero(10, "hugo");
 				repository.save(oeuf);
 				System.out.println("Oeuf added to the database.");

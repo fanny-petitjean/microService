@@ -1,5 +1,6 @@
 package code.heros.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,22 +31,9 @@ public class controllerHero {
         return "Hello, World!";
     }
 
-    @GetMapping("/t")
-    @ResponseBody
-    public String t() {
-        System.out.println("cheval");
-        return "TA MERE!";
-    }
-
-    @PostMapping("/test")
-    @ResponseBody
-    public String submitData(@RequestBody String data) {
-        return "ça marche, normalement";
-    }
-
     @PostMapping("/enleverArgent")
     @ResponseBody
-    public String enleverArgent(@RequestBody Map<String, Object> formData){
+    public Boolean enleverArgent(@RequestBody Map<String, Object> formData){
         String pseudo = (String) formData.get("pseudo");
         String prixString = String.valueOf(formData.get("prix"));
         Integer prix = Integer.parseInt(prixString);
@@ -55,15 +43,15 @@ public class controllerHero {
             Integer argent = hero.getArgent() - prix;
             hero.setArgent(argent);
             heroRepository.save(hero);
-            return "ça marche, normalement";
+            return true;
         } else {
-            return "Héros non trouvé";
+            return false;
         }
     }
 
     @PostMapping("/ajouterArgent")
     @ResponseBody
-    public String ajouterArgent(@RequestBody Map<String, Object> formData){
+    public Boolean ajouterArgent(@RequestBody Map<String, Object> formData){
         String pseudo = (String) formData.get("pseudo");
         String prixString = String.valueOf(formData.get("prix"));
         Integer prix = Integer.parseInt(prixString);
@@ -73,9 +61,22 @@ public class controllerHero {
             Integer argent = hero.getArgent() + prix;
             hero.setArgent(argent);
             heroRepository.save(hero);
-            return "ça marche, normalement";
+            return true;
         } else {
-            return "Héros non trouvé";
+            return false;
+        }
+    }
+
+    @PostMapping("/informationHero")
+    @ResponseBody
+    public Hero informationHero(@RequestParam MultiValueMap<String, String> formData){
+        String pseudo = formData.getFirst("pseudo");
+        Optional<Hero> optionalHero = heroRepository.findByName(pseudo);
+        if (optionalHero.isPresent()) {
+            Hero hero = optionalHero.get();
+            return hero;
+        } else {
+            return null;
         }
     }
 }

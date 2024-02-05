@@ -1,4 +1,4 @@
-package code.boutique.controller;
+package code.visuel;
  
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.mvc.ProxyExchange;

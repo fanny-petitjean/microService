@@ -1,6 +1,7 @@
 package code.incubateuroeuf;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +20,9 @@ public class IncubateuroeufApplication {
 	@Bean
     public CommandLineRunner loadData(IncubateurOeufRepository repository) {
         return (args) -> {
-            if (!repository.existsById(1)) {
+			List<IncubateurOeuf> incubateurOeuf = repository.findAll();
+
+            if (incubateurOeuf.isEmpty()) {
 				LocalDateTime d = LocalDateTime.of(2023, 12, 12, 10, 0);
 
 				IncubateurOeuf oeuf = new IncubateurOeuf(1,1,1, d);

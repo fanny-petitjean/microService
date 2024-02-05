@@ -1,6 +1,8 @@
 package code.inventairemonstre.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,20 +29,7 @@ public class controllerInventaireMonstre {
     public String helloWorld() {
         return "Hello, World!";
     }
-
-    @PostMapping("/test")
-    @ResponseBody
-    public String submitData(@RequestBody String data) {
-        return helloWorld() + "ça marche, normalement";
-    }
-    // afficher les infos Monstre
-    @PostMapping("/afficherMonstre")
-    public String afficherMonstre() {
-        String value = "test";
-        //Demander les infos dans la BD
-        // renvoyer les infos
-        return value;
-    }
+ 
     // afficher les infos Monstre
     @PostMapping("/listerMonstre")
     @ResponseBody
@@ -48,5 +37,36 @@ public class controllerInventaireMonstre {
         String pseudo = formData.getFirst("pseudo");
         List<InventaireMonstre> i = inventaireMonstreRepository.findByIdentifiantHero(pseudo);
         return i;
+    }
+
+    @PostMapping("/enleverMonstre")
+    @ResponseBody
+    public Boolean enleverMonstre(@RequestBody Map<String, Object> formData) {
+        String id = String.valueOf(formData.get("id"));
+        Integer id2 = Integer.parseInt(id);
+
+        Optional<InventaireMonstre> incubateurOptional = inventaireMonstreRepository.findById(id2);
+
+        if (incubateurOptional.isPresent()) {
+            InventaireMonstre incubateur = incubateurOptional.get();
+            inventaireMonstreRepository.delete(incubateur);
+            return true;
+        } else {
+            return false; // L'incubateur avec l'ID spécifié n'a pas été trouvé
+        }
+    }
+    @PostMapping("/ajouterMonstre")
+    @ResponseBody
+    public InventaireMonstre ajouterMonstre(@RequestBody Map<String, String> formData) {
+        String pseudo = formData.get("pseudo");
+        String name = formData.get("name");
+        String type = formData.get("type");
+        Integer identifiantMonstre = Integer.parseInt(formData.get("identifiantMonstre"));
+        Integer xp = Integer.parseInt(formData.get("xp"));
+        Integer niveau = Integer.parseInt(formData.get("niveau"));
+
+        InventaireMonstre inv = new InventaireMonstre(identifiantMonstre, name, type, niveau, xp, pseudo);
+        inventaireMonstreRepository.save(inv);
+        return inv;
     }
 }
