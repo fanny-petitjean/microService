@@ -16,7 +16,7 @@ public class IncubateurOeuf {
     private Integer id;
 
     private Integer identifiantIncubateur;
-    private Integer identifiantHero;
+    private String identifiantHero;
     private Integer identifiantOeuf;
 
     private LocalDateTime dateFinEclosion;
@@ -25,7 +25,7 @@ public class IncubateurOeuf {
         // Constructeur par défaut nécessaire pour JPA
     }
 
-    public IncubateurOeuf(Integer identifiantIncubateur, Integer hero, Integer oeuf, LocalDateTime dateFinEclosion) {
+    public IncubateurOeuf(Integer identifiantIncubateur, String hero, Integer oeuf, LocalDateTime dateFinEclosion) {
         this.identifiantIncubateur = identifiantIncubateur;
         this.identifiantHero = hero;
         this.identifiantOeuf = oeuf;
@@ -40,11 +40,11 @@ public class IncubateurOeuf {
         this.identifiantIncubateur = identifiantIncubateur;
     }
 
-    public Integer getHero() {
+    public String getHero() {
         return identifiantHero;
     }
 
-    public void setHero(Integer hero) {
+    public void setHero(String hero) {
         this.identifiantHero = hero;
     }
 

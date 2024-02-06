@@ -25,7 +25,7 @@ public class IncubateuroeufApplication {
             if (incubateurOeuf.isEmpty()) {
 				LocalDateTime d = LocalDateTime.of(2023, 12, 12, 10, 0);
 
-				IncubateurOeuf oeuf = new IncubateurOeuf(1,1,1, d);
+				IncubateurOeuf oeuf = new IncubateurOeuf(1,"T",1, d);
 				repository.save(oeuf);
 				System.out.println("Oeuf added to the database.");
 			} else {
