@@ -32,6 +32,8 @@
                         <p th:text="'Pseudo : ' + ${tabHero.name}"></p>
                         <p th:text="'Argent : ' + ${tabHero.argent}"></p>
                 </div>
+                <button th:onclick="'deconnexion(\'' + __${pseudo}__ + '\')'">Déconnexion</button>            
+
             </div>
         </section>
 </main>   

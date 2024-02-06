@@ -6,6 +6,7 @@ inventaireMonstre/inventairemonstre/h2inventaireMonstre.mv.db
 inventaireoeuf/inventaireoeuf/h2inventaireOeuf.mv.db
 monstre/monstre/h2monstre.mv.db
 stockage/stockage/h2stockage.mv.db
+view/visuel/h2inventaireMonstre.mv.db
 ./boutique/boutique/h2boutique.mv.db
 ./heros/heros/h2heros.mv.db
 ./incubateurOeuf/incubateuroeuf/h2incubateurOeuf.mv.db
@@ -14,3 +15,4 @@ stockage/stockage/h2stockage.mv.db
 ./inventaireoeuf/inventaireoeuf/h2inventaireOeuf.mv.db
 ./monstre/monstre/h2monstre.mv.db
 ./stockage/stockage/h2stockage.mv.db
+./view/visuel/h2inventaireMonstre.mv.db
