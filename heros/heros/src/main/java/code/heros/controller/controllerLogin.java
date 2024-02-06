@@ -26,7 +26,7 @@ public class controllerLogin {
         Optional<Hero> hero = heroRepository.findByName(formData.getFirst("pseudo"));
         System.out.println(hero);
         if(hero.isEmpty()){
-            Hero her1 = new Hero(250000,formData.getFirst("pseudo"));
+            Hero her1 = new Hero(250000,formData.getFirst("pseudo"),0);
             System.out.println(her1);
             Hero savedHero = heroRepository.save(her1); // Sauvegarder le nouvel utilisateur dans la base de données
 
@@ -35,7 +35,6 @@ public class controllerLogin {
             Hero hero1 = hero.get();
             System.out.println(hero1);
             Hero savedHero = heroRepository.save(hero1); // Sauvegarder le nouvel utilisateur dans la base de données
-
             return savedHero;
         }
     }

@@ -22,7 +22,7 @@ public class HerosApplication {
         return (args) -> {
 			List<Hero> hero = repository.findAll();
             if (hero.isEmpty()) {
-				Hero oeuf = new Hero(10, "hugo");
+				Hero oeuf = new Hero(10, "hugo", 5);
 				repository.save(oeuf);
 				System.out.println("Oeuf added to the database.");
 			} else {

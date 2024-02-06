@@ -62,23 +62,6 @@ public class controllerBoutique {
         Oeuf o = oeufRepository.save(oeuf);
         return oeufRepository.existsById(o.getId());
     }  
-
-
-    @PostMapping("/ajouterOeuf")
-    @ResponseBody
-    public  String ajouterOeuf() {
-        int nombreOeufsCrees = 0;
-
-        // Créer 20 œufs
-        for (int i = 0; i < 20; i++) {
-            boolean succes = genererOeuf();
-            if (succes) {
-                nombreOeufsCrees++;
-            }
-        }
-        return nombreOeufsCrees + " œufs ont été créés avec succès.";
-    }   
-
     public Boolean genererIncubateur() {
         Random random = new Random();
 
@@ -91,20 +74,48 @@ public class controllerBoutique {
         return incubateurRepository.existsById(incubateur.getId());
     }  
 
-    @PostMapping("/ajouterIncubateur")
+    public void supprimerTousLesOeufs() {
+        oeufRepository.deleteAll();
+    }
+    
+    public void supprimerTousLesIncubateurs() {
+        incubateurRepository.deleteAll();
+    }
+    
+    @GetMapping("/miseAJourBoutique")
     @ResponseBody
-    public String ajouterIncubateur() {
+    public String miseAJourBoutique() {
+        System.out.println("Mise à jour de la boutique en cours...");
+    
+        // Supprimer tous les oeufs existants
+        supprimerTousLesOeufs();
+    
+        // Supprimer tous les incubateurs existants
+        supprimerTousLesIncubateurs();
         int nombreOeufIncubateur = 0;
+    
 
         // Créer 20 œufs
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 6; i++) {
             boolean succes = genererIncubateur();
             if (succes) {
                 nombreOeufIncubateur++;
             }
         }
-        return nombreOeufIncubateur + " œufs ont été créés avec succès.";
-    }  
+
+        int nombreOeufsCrees = 0;
+
+        // Créer 20 œufs
+        for (int i = 0; i < 20; i++) {
+            boolean succes = genererOeuf();
+            if (succes) {
+                nombreOeufsCrees++;
+            }
+        }
+        return nombreOeufsCrees + " œufs ont été créés avec succès.";
+    }   
+
+ 
 
 
     @DeleteMapping("/enleverIncubateur")

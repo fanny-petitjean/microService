@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface HeroRepository extends JpaRepository<Hero, Integer> {
     Optional<Hero> findByName(String name);
     boolean existsById(Integer id);
-
 }

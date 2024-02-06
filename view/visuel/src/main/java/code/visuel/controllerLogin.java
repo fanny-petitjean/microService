@@ -9,18 +9,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.client.RestTemplate;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @SessionAttributes("pseudo")
 public class controllerLogin {
 
+    
     @Autowired
     private RestTemplate restTemplate;
 
@@ -45,5 +49,18 @@ public class controllerLogin {
         // Rediriger vers la page principale
         return "redirect:/boutique";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response, SessionStatus status) {
+        HttpSession session = request.getSession(); 
+        if (session != null) {
+
+            session.invalidate(); // Invalide la session
+        }
+        status.setComplete(); // Termine la session
+        // Redirection vers la page de connexion ou une autre page
+        return "redirect:/";
+    }
+
 
 }

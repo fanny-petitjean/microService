@@ -33,6 +33,7 @@ public class controllerVisuel {
     
     @GetMapping("/")
     public String login() {
+        System.out.println("test");
         return "login";
     }
 
