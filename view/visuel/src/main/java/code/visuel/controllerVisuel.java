@@ -33,6 +33,7 @@ public class controllerVisuel {
     
     @GetMapping("/")
     public String login() {
+        System.out.println("test");
         return "login";
     }
 
@@ -40,7 +41,6 @@ public class controllerVisuel {
     public String boutique(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String pseudo = (String) session.getAttribute("pseudo");
-        System.out.println(pseudo);
         if (pseudo != null && !pseudo.isEmpty()) {
 
             // Construire le corps de la requête avec "pseudo"
@@ -107,7 +107,6 @@ public class controllerVisuel {
     public String inventaire(HttpServletRequest request,Model model, ProxyExchange<byte[]> proxy) {
         HttpSession session = request.getSession();
         String pseudo = (String) session.getAttribute("pseudo");
-        System.out.println(pseudo);
         if (pseudo != null && !pseudo.isEmpty()) {
             HttpHeaders headershero = new HttpHeaders();
             headershero.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -124,7 +123,6 @@ public class controllerVisuel {
 
             // Récupérer la liste d'objets de la réponse
             Object tabHero = responseEntityHero.getBody();
-            System.out.println(tabHero);
             // Faites quelque chose avec la liste d'objets, par exemple, les ajouter à un modèle
             model.addAttribute("tabHero", tabHero); 
 
@@ -160,7 +158,8 @@ public class controllerVisuel {
 
             // Récupérer la liste d'objets de la réponse
             List<Object> tabOeuf = responseEntityOeuf.getBody();
-
+            System.out.println(tabOeuf);
+            System.out.println(tabIncubateur);
             model.addAttribute("tabOeuf", tabOeuf); 
             model.addAttribute("tabIncubateur", tabIncubateur);        
             model.addAttribute("pseudo", pseudo);

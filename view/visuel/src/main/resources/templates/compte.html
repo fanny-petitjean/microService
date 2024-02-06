@@ -32,9 +32,29 @@
                         <p th:text="'Pseudo : ' + ${tabHero.name}"></p>
                         <p th:text="'Argent : ' + ${tabHero.argent}"></p>
                 </div>
+                <button th:onclick="'deconnexion(\'' + __${pseudo}__ + '\')'">Déconnexion</button>            
+
             </div>
         </section>
 </main>   
+<script>
+    function deconnexion() {
+        // Effectuer une requête HTTP GET vers la méthode de déconnexion
+        fetch('/logout', { method: 'GET' })
+            .then(response => {
+                if (response.ok) {
+                    // Redirection vers la page de déconnexion
+                    window.location.href = '/';
+                } else {
+                    console.error('Erreur lors de la déconnexion');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur :', error);
+            });
+    }
+
+</script>
 <footer>
     <p>&copy; 2024 Boutique en ligne. Tous droits réservés.</p>
 </footer> 

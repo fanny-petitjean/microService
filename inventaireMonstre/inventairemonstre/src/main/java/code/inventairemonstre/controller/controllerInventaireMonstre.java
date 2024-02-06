@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,22 +40,23 @@ public class controllerInventaireMonstre {
         return i;
     }
 
-    @PostMapping("/enleverMonstre")
+    @DeleteMapping("/enleverMonstre")
     @ResponseBody
     public Boolean enleverMonstre(@RequestBody Map<String, Object> formData) {
         String id = String.valueOf(formData.get("id"));
         Integer id2 = Integer.parseInt(id);
-
-        Optional<InventaireMonstre> incubateurOptional = inventaireMonstreRepository.findById(id2);
-
-        if (incubateurOptional.isPresent()) {
-            InventaireMonstre incubateur = incubateurOptional.get();
-            inventaireMonstreRepository.delete(incubateur);
+    
+        Optional<InventaireMonstre> monstreOptional = inventaireMonstreRepository.findById(id2);
+    
+        if (monstreOptional.isPresent()) {
+            InventaireMonstre monstre = monstreOptional.get();
+            inventaireMonstreRepository.delete(monstre);
             return true;
         } else {
-            return false; // L'incubateur avec l'ID spécifié n'a pas été trouvé
+            return false; // Le monstre avec l'ID spécifié n'a pas été trouvé
         }
     }
+    
     @PostMapping("/ajouterMonstre")
     @ResponseBody
     public InventaireMonstre ajouterMonstre(@RequestBody Map<String, String> formData) {

@@ -33,7 +33,7 @@
                         <img src="product1.jpg" alt="Produit 1">
                         <p>Oeuf</p>
                         <p th:text="'Prix : ' + ${product.prix}"></p>
-                        <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${product.oeufId}__ + '\', \'' + __${product.dureeEclosion}__ + '\')'">Acheter</button>            
+                        <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${product.prix}__ + '\', \'' + __${product.dureeEclosion}__ + '\')'">Acheter</button>            
                 </div>
             </div>
             <!-- Boucle pour les incubateurs -->
@@ -42,7 +42,7 @@
                         <img src="product1.jpg" alt="Produit 1">
                         <p>Incubateur</p>
                         <p th:text="'Prix : ' + ${product.prix}"></p>
-                        <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${product.inventaireId}__ + '\')'">Acheter</button>            
+                        <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${product.prix}__ + '\')'">Acheter</button>            
                 </div>
             </div>
         </section>
@@ -53,79 +53,152 @@
     </footer>
 
     <script>
-        function acheter(pseudo, id, produit, prix, dureeEclosion) {
-            alert("Produit ajouté au panier !"+ produit + "   " + id+ "   " + prix + "   " + dureeEclosion);
+       function acheter(pseudo, id, produit, prix, dureeEclosion) {
+            const microserviceUrlArgent = 'http://localhost:3002/enleverArgent';
+            const dataArgent = {
+                id: id,
+                prix: prix,
+                pseudo: pseudo,
+            };
 
-            var microserviceUrl = null;
-            var data = null;
-            if(produit=="oeuf"){
-                microserviceUrl = "http://localhost:3006/ajouterOeuf";
-                data = {
-                    id: id,
-                    pseudo: pseudo,
-                    dureeEclosion:dureeEclosion,
-                };
-            }else{
-                 microserviceUrl = "http://localhost:3004/ajouterIncubateur"; 
-                 data = {
-                    id: id,
-                    pseudo: pseudo,
-                };
-            }    
-
-                    
-            // Configuration de la requête
-            const requestOptions = {
+            const requestOptionsArgent = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(dataArgent)
             };
 
-            // Effectuer une requête HTTP POST vers le micro-service
+            // Effectuer une requête HTTP POST pour enlever l'argent
+            fetch(microserviceUrlArgent, requestOptionsArgent)
+                .then(responseArgent => {
+                    if (!responseArgent.ok) {
+                        throw new Error('Erreur lors de l\'appel pour enlever l\'argent');
+                    }
+                    // Récupérer le contenu de la réponse au format JSON
+                    return responseArgent.json();
+                })
+                .then(dataArgent => {
+                    // Vérifier si la réponse est "false"
+                    if (dataArgent === false) {
+                        alert("L'opération de paiement a échoué");
+                    } else {
+                        // L'opération de paiement a réussi, effectuer l'opération d'achat
+                        let microserviceUrl = null;
+                        let data = null;
+
+                        if (produit === "oeuf") {
+                            microserviceUrl = "http://localhost:3006/ajouterOeuf";
+                            data = {
+                                id: id,
+                                pseudo: pseudo,
+                                dureeEclosion: dureeEclosion,
+                            };
+                        } else {
+                            microserviceUrl = "http://localhost:3004/ajouterIncubateur";
+                            data = {
+                                id: id,
+                                pseudo: pseudo,
+                            };
+                        }
+
+                        // Configuration de la requête
+                        const requestOptions = {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        };
+
+                        // Effectuer une requête HTTP POST pour ajouter l'élément
+                        fetch(microserviceUrl, requestOptions)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Erreur lors de l\'appel au micro-service');
+                                }
+                                var supprimerElementUrl = null;
+
+                                if (produit === "oeuf") {
+                                    supprimerElementUrl =  `http://localhost:3001/enleverOeuf`;
+                                } else {
+                                    supprimerElementUrl = `http://localhost:3001/enleverIncubateur`;
+                                }
+                                const requestOptionsSupprimer = {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ id: id })
+                                };
+
+                                fetch(supprimerElementUrl, requestOptionsSupprimer)
+                                    .then(responseSupprimer => {
+                                        if (!responseSupprimer.ok) {
+                                            throw new Error('Erreur lors de la suppression de l\'élément dans la boutique');
+                                        }
+                                        // L'élément a été supprimé avec succès de la boutique
+                                        console.log('Elément supprimé avec succès de la boutique');
+                                        // Vérifier si la réponse est OK avant de recharger la page
+                                        if (responseSupprimer.status === 200) {
+                                            location.reload();
+                                        }
+                                    })
+                                    .catch(errorSupprimer => {
+                                        console.error('Erreur lors de la suppression de l\'élément dans la boutique:', errorSupprimer);
+                                    });
+                            })
+                            .catch(error => {
+                                console.error('Erreur lors de l\'appel au micro-service:', error);
+                            });
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors de l\'appel pour enlever l\'argent:', error);
+                });
+        }
+
+        function mettreAJourBoutique() {
+            const microserviceUrl = 'http://localhost:3001/miseAJourBoutique';
+            
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            };
+
+            // Effectuer une requête HTTP POST pour enlever l'argent
             fetch(microserviceUrl, requestOptions)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Erreur lors de l\'appel au micro-service');
+                        throw new Error('Erreur lors de la mise à jour de la boutique');
                     }
-                    const microserviceUrl2 ='http://localhost:3002/enleverArgent';
-                    const data2 = {
-                        id: id,
-                        prix:prix,
-                        pseudo: pseudo,
-                    };
-                    const requestOptions2 = {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json' // Modifier le type de contenu ici
-                        },
-                        body: JSON.stringify(data2)
-                    };
-
-                    // Effectuer une requête HTTP POST vers le micro-service
-                    fetch(microserviceUrl2, requestOptions2)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Erreur lors de l\'appel au micro-service');
-                            }
-                            // Gérer la réponse du micro-service si nécessaire
-                            console.log('Appel au micro-service réussi');
-                        })
-                        .catch(error => {
-                            console.error('Erreur :', error);
-                        });
-                            // Gérer la réponse du micro-service si nécessaire
-                            console.log('Appel au micro-service réussi');
-                        })
+                    console.log('Boutique mise à jour avec succès');
+                    location.reload()
+                })
                 .catch(error => {
-                    console.error('Erreur :', error);
+                    console.error('Erreur lors de la mise à jour de la boutique:', error);
                 });
-
-            
-           
         }
+        window.onload = function() {
+            // Vérifier si la boutique doit être mise à jour automatiquement
+            const derniereMiseAJour = localStorage.getItem('derniereMiseAJourBoutique');
+            const maintenant = new Date().getTime();
+            const intervalleMiseAJour = 15 * 60 * 1000; // 15 minutes en millisecondes
+
+            if (!derniereMiseAJour || (maintenant - derniereMiseAJour > intervalleMiseAJour)) {
+                mettreAJourBoutique(); // Mettre à jour la boutique uniquement si nécessaire
+                localStorage.setItem('derniereMiseAJourBoutique', maintenant);
+            }
+        }       
+
+        // Appel récurrent toutes les 15 minutes
+        setInterval(mettreAJourBoutique,15* 20 * 1000); // 15 minutes en millisecondes
+
+
+
+
     </script>
-    <!-- Contenu de la page Boutique -->
 </body>
 </html>

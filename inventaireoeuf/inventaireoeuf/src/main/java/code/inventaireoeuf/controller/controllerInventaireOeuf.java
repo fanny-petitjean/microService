@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,23 +36,24 @@ public class controllerInventaireOeuf {
         return helloWorld() + "ça marche, normalement";
     }
 
-       @PostMapping("/enleverOeuf")
+    @DeleteMapping("/enleverOeuf")
     @ResponseBody
     public Boolean enleverOeuf(@RequestBody Map<String, Object> formData) {
         System.out.println(formData);
         String id = String.valueOf(formData.get("id"));
         Integer id2 = Integer.parseInt(id);
 
-        Optional<InventaireOeuf> incubateurOptional = inventaireOeufRepository.findById(id2);
+        Optional<InventaireOeuf> inventaireOptional = inventaireOeufRepository.findById(id2);
 
-        if (incubateurOptional.isPresent()) {
-            InventaireOeuf incubateur = incubateurOptional.get();
-            inventaireOeufRepository.delete(incubateur);
+        if (inventaireOptional.isPresent()) {
+            InventaireOeuf inventaire = inventaireOptional.get();
+            inventaireOeufRepository.delete(inventaire);
             return true;
         } else {
             return false; // L'incubateur avec l'ID spécifié n'a pas été trouvé
         }
     }
+
 
     @PostMapping("/ajouterOeuf")
     @ResponseBody

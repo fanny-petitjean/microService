@@ -13,9 +13,7 @@ public class IncubateurOeufService {
     private IncubateurOeufRepository incubateurOeufRepository;
 
     public List<IncubateurOeuf> getIncubateursOeufsByHero(String identifiantHero) {
-        return incubateurOeufRepository.findAllByIdentifiantHero(identifiantHero)
-
-    // Autres méthodes de service à implémenter...
+        return incubateurOeufRepository.findAllByIdentifiantHero(identifiantHero);
     }
 
     public void ajouterOeuf(String identifiantHero, Integer identifiantOeuf) {

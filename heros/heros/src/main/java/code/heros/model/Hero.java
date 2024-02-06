@@ -12,10 +12,12 @@ public class Hero {
     private String name;
 
     private Integer argent;
+    private Integer nbIncubateur;
 
-    public Hero(Integer argent, String name) {
+    public Hero(Integer argent, String name, Integer nbIncubateur) {
         this.argent = argent;
         this.name = name;
+        this.nbIncubateur = nbIncubateur;
 
     }
 
@@ -44,6 +46,14 @@ public class Hero {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getNbIncubateur() {
+        return nbIncubateur;
+    }
+
+    public void setNbIncubateur(Integer nbIncubateur) {
+        this.nbIncubateur = nbIncubateur;
     }
 
 
