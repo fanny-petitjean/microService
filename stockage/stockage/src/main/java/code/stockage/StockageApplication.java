@@ -17,7 +17,7 @@ public class StockageApplication {
 		SpringApplication.run(StockageApplication.class, args);
 	}
 	
-	@Bean
+	/*@Bean
     public CommandLineRunner loadData(StockageExterneRepository repository) {
         return (args) -> {
 			List<StockageExterne> list = repository.findAll();
@@ -33,6 +33,6 @@ public class StockageApplication {
 				System.out.println("stockage already exists in the database.");
 			}
         };
-    }
+    }*/
 
 }

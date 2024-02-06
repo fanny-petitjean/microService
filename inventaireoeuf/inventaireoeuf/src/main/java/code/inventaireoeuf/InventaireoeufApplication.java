@@ -17,7 +17,7 @@ public class InventaireoeufApplication {
 		SpringApplication.run(InventaireoeufApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
     public CommandLineRunner loadData(InventaireOeufRepository repository) {
         return (args) -> {
 			List<InventaireOeuf> inventaireOeuf = repository.findAll();
@@ -30,6 +30,6 @@ public class InventaireoeufApplication {
 				System.out.println("Inventaire Oeuf already exists in the database.");
 			}
         };
-    }
+    }*/
 
 }

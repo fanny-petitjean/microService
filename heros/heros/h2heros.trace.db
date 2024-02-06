@@ -96,3 +96,12 @@ The connection was not closed by the application and is garbage collected [90018
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 90 more
+2024-02-06 14:47:31.728508+01:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HERO" not found (this database is empty); SQL statement:
+/* <criteria> */ select h1_0.id,h1_0.argent,h1_0.name,h1_0.nb_incubateur from hero h1_0 where h1_0.name=? [42104-224]
+2024-02-06 14:48:31.706720+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HERO" not found (this database is empty); SQL statement:
+/* <criteria> */ select h1_0.id,h1_0.argent,h1_0.name,h1_0.nb_incubateur from hero h1_0 where h1_0.name=? [42104-224]
+2024-02-06 15:00:50.775156+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HERO" not found (this database is empty); SQL statement:
+/* <criteria> */ select h1_0.id,h1_0.argent,h1_0.name,h1_0.nb_incubateur from hero h1_0 where h1_0.name=? [42104-224]
