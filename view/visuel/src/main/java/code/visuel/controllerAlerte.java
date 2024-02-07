@@ -11,7 +11,8 @@ public class controllerAlerte {
     @MessageMapping("/update")
     @SendTo("/topic/updates")
     public String sendUpdate() {
-        return "Boutique mise à jour";
+        System.out.println("maj");
+        return "La Boutique a été mise à jour";
     }
     
 }

@@ -59,7 +59,7 @@ public class controllerLogin {
     }
 
 
-    @Scheduled(fixedRate = 1000*60)
+    @Scheduled(fixedRate = 1000*60*15)
     @GetMapping("/miseAJourBoutique")
     public void mettreAJourBoutique2() {
 

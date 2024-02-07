@@ -47,7 +47,8 @@ public class controllerBoutique {
         Integer nbIncubateur = Integer.parseInt(nbIn.getFirst("nbIncubateur"));
         Integer nb = 6-nbIncubateur;
         List<Incubateur> incubateurs = incubateurRepository.findAll();
-
+        System.out.println(nb);
+        System.out.println(incubateurs);
         // Vérifiez si le nombre demandé est supérieur au nombre d'incubateurs disponibles dans la base de données
         if (nbIncubateur > incubateurs.size()) {
             // Gérer le cas où le nombre demandé est supérieur au nombre d'incubateurs disponibles

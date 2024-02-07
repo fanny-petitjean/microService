@@ -69,12 +69,14 @@ public class controllerHero {
         String prixString = String.valueOf(formData.get("prix"));
         Integer prix = Integer.parseInt(prixString);
         String produit= (String) formData.get("produit");
+        System.out.println(produit);
         Optional<Hero> optionalHero = heroRepository.findByName(pseudo);
         if (optionalHero.isPresent()) {
             Hero hero = optionalHero.get();
             Integer argent = hero.getArgent() + prix;
             hero.setArgent(argent);
-            if(produit == "incubateur"){
+            if(produit.equals("incubateur")){
+
                 Integer nb = hero.getNbIncubateur() - 1;
                 hero.setNbIncubateur(nb);
             }
