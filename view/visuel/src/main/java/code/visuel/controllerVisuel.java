@@ -252,30 +252,25 @@ public class controllerVisuel {
     public String incubation(HttpServletRequest request,Model model, ProxyExchange<byte[]> proxy) {
         HttpSession session = request.getSession();
         String pseudo = (String) session.getAttribute("pseudo");
-        System.out.println(pseudo);
         if (pseudo != null && !pseudo.isEmpty()) {
-            // Construire le corps de la requête avec "pseudo"
-            HttpHeaders headersOeuf = new HttpHeaders();
-            headersOeuf.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            String bodyOeuf = "pseudo=" + pseudo;
-            HttpEntity<String> requestEntityOeuf = new HttpEntity<>(bodyOeuf, headersOeuf);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            String body = "pseudo=" + pseudo;
+            HttpEntity<String> requestEntity = new HttpEntity<>(body, headers);
 
-            // Envoyer la requête POST avec "pseudo" dans le corps
-            ResponseEntity<Object> responseEntityOeuf = restTemplate.exchange(
-                "http://localhost:3004/informationHero",
+            ResponseEntity<List<Object>> responseEntity = restTemplate.exchange(
+                "http://localhost:3003/listerIncubateurOeuf",
                 HttpMethod.POST,
-                requestEntityOeuf,
-                new ParameterizedTypeReference<Object>() {}
+                requestEntity,
+                new ParameterizedTypeReference<List<Object>>() {}
             );
 
             // Récupérer la liste d'objets de la réponse
-            Object tabHero = responseEntityOeuf.getBody();
-            System.out.println(tabHero);
-            // Faites quelque chose avec la liste d'objets, par exemple, les ajouter à un modèle
-            model.addAttribute("tabHero", tabHero); 
+            List<Object> tabIncubateur = responseEntity.getBody();
+            model.addAttribute("tabIncubateur", tabIncubateur);        
             model.addAttribute("pseudo", pseudo);
             return "incubateur";
-        } else {
+        }else{
             // Rediriger vers la page d'accueil si le pseudo n'est pas présent
             return "redirect:/";
         }

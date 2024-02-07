@@ -37,6 +37,10 @@
                         <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${product.prix}__ + '\', \'' + __${product.dureeEclosion}__ + '\')'">Acheter</button>            
                 </div>
             </div>
+
+            </section>
+
+            <section class="products">
             <!-- Boucle pour les incubateurs -->
             <div th:each="product : ${tabIncubateur}">
                 <div class="product">
@@ -65,7 +69,6 @@
             stompClient.connect({}, function (frame) {
                 console.log('Connected: ' + frame);
                 stompClient.subscribe('/topic/updates', function (message) {
-                    console.log('jjjjj')
                     showAlert(message.body);
                 });
             });

@@ -34,27 +34,19 @@
                         <img src="product1.jpg" alt="Produit 1">
                         <p>Oeuf</p>
                         <p th:text="'Durée éclosion : ' + ${product.dureeEclosion}"></p>
+                        <p th:text="'Id : ' + ${product.oeufId}"></p>
                         <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${product.oeufId}__ + '\', \'' + __${product.dureeEclosion}__ + '\')'">Vendre</button>
                         <!-- Bouton pour choisir l'incubateur -->
                         </br>
                         <p>Choisissez un incubateur :</p>
                             
-                        <select name="Incuber" id="incuber">
+                        <select name="Incuber" th:id="'incuber' + ${product.id}">
                             <option th:each="incubateur : ${tabIncubateur}" th:value="${incubateur.id}" th:text="'Incubateur ' + ${incubateur.id} "></option>
                         </select> 
-                        <button th:onclick="'incuber(\'' + __${product.oeufId}__ + '\')'">Incuber</button>
+                        <button th:onclick="'incuber(\'' + ${product.id} + '\',\'' + __${pseudo}__ + '\',\'' + __${product.dureeEclosion}__ + '\')'">Incuber</button>
+                        
                 </div>
             </div>
-            <!-- Boucle pour les incubateurs -->
-            <div th:each="product : ${tabIncubateur}">
-                <div class="product">
-                        <img src="product1.jpg" alt="Produit 1">
-                        <p>Incubateur</p>
-                        <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${product.identifiantIncubateur}__ + '\')'">Vendre</button>            
-                </div>
-            </div>
-
-            <!-- Afficher la liste des incubateurs disponibles -->
             <div id="incubateurList" style="display: none;">
                 <p>Choisissez un incubateur :</p>
                 <select id="selectIncubateur" th:each="incubateur : ${tabIncubateur}">
@@ -62,6 +54,19 @@
                 </select>
                 
             </div>
+            </section>
+            <section  class="products">
+            <!-- Boucle pour les incubateurs -->
+            <div th:each="product : ${tabIncubateur}">
+                <div class="product">
+                        <img src="product1.jpg" alt="Produit 1">
+                        <p>Incubateur</p>
+                        <p th:text="'id: ' + ${product.id}"></p>
+                        <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${product.identifiantIncubateur}__ + '\')'">Vendre</button>            
+                </div>
+            </div>
+
+
           
         </section>
     </main>
@@ -73,18 +78,92 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
-        function alert(tabIncubateur){
-            console.log(tabIncubateur);
-        }
 
         function choisirIncubateur() {
             document.getElementById('incubateurList').style.display = 'block';
         }
 
-        function incuber(id) {
-            var selectedIncubateurId = document.getElementById('incuber').value;
-            // Ajoutez votre logique pour l'incubation ici
-            alert('Incuber avec l\'incubateur ' + id);
+        function incuber(idOeuf, pseudo, dureeEclosion) {
+            var idIncubateur = document.getElementById('incuber' + idOeuf).value;
+           
+            const microserviceUrlIncuber = 'http://localhost:3003/ajouterOeufIncubateur';
+            const dataIncuber = {
+                idOeuf: idOeuf,
+                idIncubateur: idIncubateur,
+                pseudo: pseudo,
+                dureeEclosion:dureeEclosion,
+            };
+
+            const requestOptionsIncuber = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataIncuber)
+            };
+
+            fetch(microserviceUrlIncuber, requestOptionsIncuber)
+                .then(responseIncuber => {
+                    if (!responseIncuber.ok) {
+                        throw new Error('Erreur lors de l\'appel pour enlever l\'argent');
+                    }
+                    // Récupérer le contenu de la réponse au format JSON
+                    return responseIncuber.json();
+                })
+                .then(dataIncuber => {
+                    // Vérifier si la réponse est "false"
+                    if (dataIncuber === false) {
+                        alert("L'opération d\'incubation a échoué");
+                    } else {
+                        var supprimerElementUrI = `http://localhost:3004/enleverIncubateur`;
+                            
+                            const requestOptionsSupprimerI = {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ id: idIncubateur })
+                            };
+
+                        fetch(supprimerElementUrI, requestOptionsSupprimerI)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Erreur lors de l\'appel au micro-service');
+                                }
+                                var supprimerElementUrl = `http://localhost:3006/enleverOeuf`;
+                                
+                                const requestOptionsSupprimer = {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ id: idOeuf })
+                                };
+
+                                fetch(supprimerElementUrl, requestOptionsSupprimer)
+                                    .then(responseSupprimer => {
+                                        if (!responseSupprimer.ok) {
+                                            throw new Error('Erreur lors de la suppression de l\'élément dans l\'iventaire');
+                                        }
+                                        // L'élément a été supprimé avec succès de la boutique
+                                        console.log('Elément supprimé avec succès de la boutique');
+                                        // Vérifier si la réponse est OK avant de recharger la page
+                                        if (responseSupprimer.status === 200) {
+                                            location.reload();
+                                        }
+                                    })
+                                    .catch(errorSupprimer => {
+                                        console.error('Erreur lors de la suppression de l\'élément dans l\'inventaire:', errorSupprimer);
+                                    });
+                            })
+                            .catch(error => {
+                                console.error('Erreur lors de l\'appel au micro-service:', error);
+                            });
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors de l\'appel', error);
+                });
             document.getElementById('incubateurList').style.display = 'none';
         }
 
@@ -96,7 +175,6 @@
             stompClient.connect({}, function (frame) {
                 console.log('Connected: ' + frame);
                 stompClient.subscribe('/topic/updates', function (message) {
-                    console.log('jjjjj')
                     showAlert(message.body);
                 });
             });
@@ -129,9 +207,6 @@
                 };
                 prix = Math.floor(Math.random() * (2000 - 1000 + 1)) + 100;
             }
-            console.log(produit)
-
-            // Configuration de la requête
             const requestOptions = {
                 method: 'DELETE',
                 headers: {
