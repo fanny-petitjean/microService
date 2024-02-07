@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 
 import java.time.LocalDateTime;
 
@@ -32,11 +33,15 @@ public class IncubateurOeuf {
         this.dateFinEclosion = dateFinEclosion;
     }
 
-    public Integer getIdentifiantIncubateur() {
+    public Integer getId(){
+        return id;
+    }
+
+    public Integer getIdIncubateur() {
         return identifiantIncubateur;
     }
 
-    public void setIdentifiantIncubateur(Integer identifiantIncubateur) {
+    public void setIdIncubateur(Integer identifiantIncubateur) {
         this.identifiantIncubateur = identifiantIncubateur;
     }
 
@@ -48,11 +53,11 @@ public class IncubateurOeuf {
         this.identifiantHero = hero;
     }
 
-    public Integer getOeuf() {
+    public Integer getIdOeuf() {
         return identifiantOeuf;
     }
 
-    public void setOeuf(Integer oeuf) {
+    public void setIdOeuf(Integer oeuf) {
         this.identifiantOeuf = oeuf;
     }
 

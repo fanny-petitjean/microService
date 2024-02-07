@@ -39,7 +39,6 @@ public class controllerInventaireOeuf {
     @DeleteMapping("/enleverOeuf")
     @ResponseBody
     public Boolean enleverOeuf(@RequestBody Map<String, Object> formData) {
-        System.out.println(formData);
         String id = String.valueOf(formData.get("id"));
         Integer id2 = Integer.parseInt(id);
 

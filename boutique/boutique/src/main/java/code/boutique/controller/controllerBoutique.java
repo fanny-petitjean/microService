@@ -50,7 +50,7 @@ public class controllerBoutique {
         System.out.println(nb);
         System.out.println(incubateurs);
         // Vérifiez si le nombre demandé est supérieur au nombre d'incubateurs disponibles dans la base de données
-        if (nbIncubateur > incubateurs.size()) {
+        if (nb > incubateurs.size()) {
             // Gérer le cas où le nombre demandé est supérieur au nombre d'incubateurs disponibles
             throw new IllegalArgumentException("Le nombre d'incubateurs demandé est supérieur au nombre total d'incubateurs disponibles.");
         }

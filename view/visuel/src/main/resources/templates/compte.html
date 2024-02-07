@@ -50,7 +50,6 @@
             stompClient.connect({}, function (frame) {
                 console.log('Connected: ' + frame);
                 stompClient.subscribe('/topic/updates', function (message) {
-                    console.log('jjjjj')
                     showAlert(message.body);
                 });
             });

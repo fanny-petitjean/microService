@@ -1,0 +1,3 @@
+2024-02-07 11:34:43.968676+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "INCUBATEUR_OEUF" not found (this database is empty); SQL statement:
+/* insert for code.incubateuroeuf.model.IncubateurOeuf */insert into incubateur_oeuf (date_fin_eclosion,identifiant_hero,identifiant_incubateur,identifiant_oeuf,id) values (?,?,?,?,?) [42104-224]

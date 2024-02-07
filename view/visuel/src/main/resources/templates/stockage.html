@@ -58,7 +58,6 @@
             stompClient.connect({}, function (frame) {
                 console.log('Connected: ' + frame);
                 stompClient.subscribe('/topic/updates', function (message) {
-                    console.log('jjjjj')
                     showAlert(message.body);
                 });
             });
@@ -91,8 +90,6 @@
                     return response.json(); // Convertir la réponse en JSON
                 })
                 .then(data => {
-                    // Vérifier si la réponse est "true"
-                    console.log(data)
                     if (data === true) {
                         const microserviceUrl2 = 'http://localhost:3002/ajouterArgent';
                         const data2 = {
@@ -167,7 +164,6 @@
                         id: id,
                         pseudo: pseudo,
                     };
-                    console.log("iiiiid" + id);
                     const requestOptions2 = {
                         method: 'DELETE',
                         headers: {
