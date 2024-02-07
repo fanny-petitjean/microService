@@ -12,7 +12,7 @@
     <header>
         <nav>
             <ul>
-                <li th:text="'Argent : ' + ${tabHero.argent}"></li>
+                <li th:text="'Argent : ' + ${argent}"></li>
                 <li><a href="/boutique">Boutique</a></li>
                 <li><a href="/inventaire">Inventaire</a></li>
                 <li><a href="/inventaire_monstre">Inventaire Monstre</a></li>
@@ -33,6 +33,7 @@
                         <img src="product1.jpg" alt="Produit 1">
                         <p>Oeuf</p>
                         <p th:text="'Prix : ' + ${product.prix}"></p>
+                        <div id="pseudo" th:data-pseudo="${pseudo}" style="display: none;"></div>
                         <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'oeuf'__ + '\', \'' + __${product.prix}__ + '\', \'' + __${product.dureeEclosion}__ + '\')'">Acheter</button>            
                 </div>
             </div>
@@ -42,6 +43,7 @@
                         <img src="product1.jpg" alt="Produit 1">
                         <p>Incubateur</p>
                         <p th:text="'Prix : ' + ${product.prix}"></p>
+                        <div id="pseudo" th:data-pseudo="${pseudo}" style="display: none;"></div>
                         <button th:onclick="'acheter(\'' + __${pseudo}__ + '\',\'' + __${product.id}__ + '\', \'' + __'incubateur'__ + '\', \'' + __${product.prix}__ + '\')'">Acheter</button>            
                 </div>
             </div>
@@ -51,14 +53,38 @@
     <footer>
         <p>&copy; 2024 Boutique en ligne. Tous droits réservés.</p>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
+        var stompClient = null;
+
+        function connect() {
+            var socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/updates', function (message) {
+                    console.log('jjjjj')
+                    showAlert(message.body);
+                });
+            });
+        }
+
+        function showAlert(message) {
+            location.reload()
+            alert(message)
+        }
+
+        connect();
+
        function acheter(pseudo, id, produit, prix, dureeEclosion) {
             const microserviceUrlArgent = 'http://localhost:3002/enleverArgent';
             const dataArgent = {
                 id: id,
                 prix: prix,
                 pseudo: pseudo,
+                produit:produit,
             };
 
             const requestOptionsArgent = {
@@ -157,45 +183,6 @@
                     console.error('Erreur lors de l\'appel pour enlever l\'argent:', error);
                 });
         }
-
-        function mettreAJourBoutique() {
-            const microserviceUrl = 'http://localhost:3001/miseAJourBoutique';
-            
-            const requestOptions = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            };
-
-            // Effectuer une requête HTTP POST pour enlever l'argent
-            fetch(microserviceUrl, requestOptions)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erreur lors de la mise à jour de la boutique');
-                    }
-                    console.log('Boutique mise à jour avec succès');
-                    location.reload()
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la mise à jour de la boutique:', error);
-                });
-        }
-        window.onload = function() {
-            // Vérifier si la boutique doit être mise à jour automatiquement
-            const derniereMiseAJour = localStorage.getItem('derniereMiseAJourBoutique');
-            const maintenant = new Date().getTime();
-            const intervalleMiseAJour = 15 * 60 * 1000; // 15 minutes en millisecondes
-
-            if (!derniereMiseAJour || (maintenant - derniereMiseAJour > intervalleMiseAJour)) {
-                mettreAJourBoutique(); // Mettre à jour la boutique uniquement si nécessaire
-                localStorage.setItem('derniereMiseAJourBoutique', maintenant);
-            }
-        }       
-
-        // Appel récurrent toutes les 15 minutes
-        setInterval(mettreAJourBoutique,15* 20 * 1000); // 15 minutes en millisecondes
-
 
 
 

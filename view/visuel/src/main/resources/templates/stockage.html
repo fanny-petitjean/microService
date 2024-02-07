@@ -46,131 +46,153 @@
     <footer>
         <p>&copy; 2024 Boutique en ligne. Tous droits réservés.</p>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
-        function vendre(pseudo, id, name) {
-    var microserviceUrl = "http://localhost:3005/enleverMonstre";
-    var data = {
-        id: id,
-        pseudo: pseudo,
-    };
-    var prix = Math.floor(Math.random() * (3500 - 1500 + 1)) + 100;
-    const requestOptions = {
-        method: 'DELETE', // Utiliser la méthode DELETE
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    };
+        var stompClient = null;
 
-    fetch(microserviceUrl, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erreur lors de l\'appel au micro-service');
-            }
-            return response.json(); // Convertir la réponse en JSON
-        })
-        .then(data => {
-            // Vérifier si la réponse est "true"
-            if (data === true) {
-                const microserviceUrl2 = 'http://localhost:3002/ajouterArgent';
-                const data2 = {
-                    id: id,
-                    prix: prix,
-                    pseudo: pseudo,
-                };
-                const requestOptions2 = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json' // Modifier le type de contenu ici
-                    },
-                    body: JSON.stringify(data2)
-                };
+        function connect() {
+            var socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/updates', function (message) {
+                    console.log('jjjjj')
+                    showAlert(message.body);
+                });
+            });
+        }
 
-                // Effectuer une requête HTTP POST vers le micro-service
-                fetch(microserviceUrl2, requestOptions2)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Erreur lors de l\'appel au micro-service');
-                        }
-                        // Gérer la réponse du micro-service si nécessaire
-                        console.log('Appel au micro-service réussi');
-                    })
-                    .catch(error => {
-                        console.error('Erreur :', error);
-                    });
-                // Gérer la réponse du micro-service si nécessaire
-                console.log('Appel au micro-service réussi');
-                location.reload();
-            } else {
-                console.error('Erreur lors de l\'appel au micro-service : la réponse n\'est pas "true"');
-            }
-        })
-        .catch(error => {
-            console.error('Erreur :', error);
-        });
-}
+        function showAlert(message) {
+            alert(message)
+        }
 
-
-
-        function inventaire(pseudo, id, name, xp, type, niveau, identifiantMonstre) {
-    var microserviceUrl = null;
-    var data = null;
-    var prix = null;
-
-    microserviceUrl = "http://localhost:3005/ajouterMonstre";
-    data = {
-        pseudo: pseudo,
-        name: name,
-        xp: xp,
-        type: type,
-        niveau: niveau,
-        identifiantMonstre: identifiantMonstre,
-    };
-
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    };
-
-    fetch(microserviceUrl, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erreur lors de l\'appel au micro-service');
-            }
-            const microserviceUrl2 = 'http://localhost:3008/enleverMonstre';
-            const data2 = {
+    function vendre(pseudo, id, name) {
+            var microserviceUrl = "http://localhost:3008/enleverMonstre";
+            var data = {
                 id: id,
                 pseudo: pseudo,
             };
-            console.log("iiiiid" + id);
-            const requestOptions2 = {
-                method: 'DELETE',
+            var prix = Math.floor(Math.random() * (3500 - 1500 + 1)) + 100;
+            const requestOptions = {
+                method: 'DELETE', // Utiliser la méthode DELETE
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data2)
+                body: JSON.stringify(data)
             };
 
-            fetch(microserviceUrl2, requestOptions2)
+            fetch(microserviceUrl, requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Erreur lors de l\'appel au micro-service');
                     }
-                    // Gérer la réponse du micro-service si nécessaire
-                    console.log('Appel au micro-service réussi');
-                    location.reload();
+                    return response.json(); // Convertir la réponse en JSON
+                })
+                .then(data => {
+                    // Vérifier si la réponse est "true"
+                    console.log(data)
+                    if (data === true) {
+                        const microserviceUrl2 = 'http://localhost:3002/ajouterArgent';
+                        const data2 = {
+                            id: id,
+                            prix: prix,
+                            pseudo: pseudo,
+                        };
+                        const requestOptions2 = {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json' // Modifier le type de contenu ici
+                            },
+                            body: JSON.stringify(data2)
+                        };
+
+                        // Effectuer une requête HTTP POST vers le micro-service
+                        fetch(microserviceUrl2, requestOptions2)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Erreur lors de l\'appel au micro-service');
+                                }
+                                // Gérer la réponse du micro-service si nécessaire
+                                console.log('Appel au micro-service réussi');
+                            })
+                            .catch(error => {
+                                console.error('Erreur :', error);
+                            });
+                        // Gérer la réponse du micro-service si nécessaire
+                        console.log('Appel au micro-service réussi');
+                        location.reload();
+                    } else {
+                        console.error('Erreur lors de l\'appel au micro-service : la réponse n\'est pas "true"');
+                    }
                 })
                 .catch(error => {
                     console.error('Erreur :', error);
                 });
-        })
-        .catch(error => {
-            console.error('Erreur :', error);
-        });
-}
+        }
+
+
+
+        function inventaire(pseudo, id, name, xp, type, niveau, identifiantMonstre) {
+            var microserviceUrl = null;
+            var data = null;
+            var prix = null;
+
+            microserviceUrl = "http://localhost:3005/ajouterMonstre";
+            data = {
+                pseudo: pseudo,
+                name: name,
+                xp: xp,
+                type: type,
+                niveau: niveau,
+                identifiantMonstre: identifiantMonstre,
+            };
+
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+
+            fetch(microserviceUrl, requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur lors de l\'appel au micro-service');
+                    }
+                    const microserviceUrl2 = 'http://localhost:3008/enleverMonstre';
+                    const data2 = {
+                        id: id,
+                        pseudo: pseudo,
+                    };
+                    console.log("iiiiid" + id);
+                    const requestOptions2 = {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data2)
+                    };
+
+                    fetch(microserviceUrl2, requestOptions2)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de l\'appel au micro-service');
+                            }
+                            // Gérer la réponse du micro-service si nécessaire
+                            console.log('Appel au micro-service réussi');
+                            location.reload();
+                        })
+                        .catch(error => {
+                            console.error('Erreur :', error);
+                        });
+                })
+                .catch(error => {
+                    console.error('Erreur :', error);
+                });
+        }
 
     </script>
 </body>

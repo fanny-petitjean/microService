@@ -69,7 +69,11 @@
     <footer>
         <p>&copy; 2024 Boutique en ligne. Tous droits réservés.</p>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
+<<<<<<< HEAD
         function alert(tabIncubateur){
             console.log(tabIncubateur);
         }
@@ -85,6 +89,27 @@
             document.getElementById('incubateurList').style.display = 'none';
         }
 
+=======
+        var stompClient = null;
+
+        function connect() {
+            var socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/updates', function (message) {
+                    console.log('jjjjj')
+                    showAlert(message.body);
+                });
+            });
+        }
+
+        function showAlert(message) {
+            alert(message)
+        }
+
+        connect();
+>>>>>>> c20d109a3c65342d3cf1bb01daa86094e2959be8
         function vendre(pseudo, id, produit, idProduit, dureeEclosion) {
             var microserviceUrl = null;
             var data = null;
@@ -96,6 +121,10 @@
                     id: id,
                     pseudo: pseudo,
                     dureeEclosion: dureeEclosion,
+<<<<<<< HEAD
+=======
+                    produit:produit
+>>>>>>> c20d109a3c65342d3cf1bb01daa86094e2959be8
                 };
                 prix = Math.floor(Math.random() * (500 - 100 + 1)) + 100;
             } else {
@@ -106,6 +135,10 @@
                 };
                 prix = Math.floor(Math.random() * (2000 - 1000 + 1)) + 100;
             }
+<<<<<<< HEAD
+=======
+            console.log(produit)
+>>>>>>> c20d109a3c65342d3cf1bb01daa86094e2959be8
 
             // Configuration de la requête
             const requestOptions = {
@@ -133,6 +166,10 @@
                             id: id,
                             prix: prix,
                             pseudo: pseudo,
+<<<<<<< HEAD
+=======
+                            produit:produit,
+>>>>>>> c20d109a3c65342d3cf1bb01daa86094e2959be8
                         };
                         const requestOptions2 = {
                             method: 'POST',
@@ -154,6 +191,10 @@
                     if (response && response.ok) {
                         console.log('Deuxième appel réussi');
                         location.reload();
+<<<<<<< HEAD
+=======
+
+>>>>>>> c20d109a3c65342d3cf1bb01daa86094e2959be8
                     } else {
                         alert("Erreur")
                         console.error('Erreur lors du deuxième appel');

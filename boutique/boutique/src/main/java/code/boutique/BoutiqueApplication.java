@@ -18,7 +18,7 @@ public class BoutiqueApplication {
         SpringApplication.run(BoutiqueApplication.class, args);
     }
 
-    @Bean
+   /* @Bean
     public CommandLineRunner loadData(OeufRepository repository, IncubateurRepository incubateur) {
         return (args) -> {
             List<Oeuf> oeufs = repository.findAll();
@@ -51,5 +51,5 @@ public class BoutiqueApplication {
                 incubateur.save(incu);
             }
         };
-    }
+    }*/
 }
