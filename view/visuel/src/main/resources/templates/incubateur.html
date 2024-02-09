@@ -34,6 +34,7 @@
                         <p th:text="'Incubateur: ' + ${product.idIncubateur}"></p>
                         <p th:text="'Oeuf: ' + ${product.idOeuf}"></p>
                         <p th:text="'Date: ' + ${product.dateFinEclosion}"></p>
+                        <p th:if="${incubateursAvecDateFuture.contains(product)}">Date passée</p>
                         <button th:onclick="'vendre(\'' + __${pseudo}__ + '\',\'' + __${product.idOeuf}__ + '\', \'' + __${product.idIncubateur}__ + '\')'">Vendre</button>            
                 </div>
             </div>

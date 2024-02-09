@@ -1,9 +1,12 @@
 package code.visuel;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.mvc.ProxyExchange;
@@ -267,6 +270,16 @@ public class controllerVisuel {
 
             // Récupérer la liste d'objets de la réponse
             List<Object> tabIncubateur = responseEntity.getBody();
+            // Filtrer les incubateurs dont la date d'éclosion est supérieure à maintenant
+            List<Object> incubateursAvecDateFuture = tabIncubateur.stream()
+                .filter(obj -> {
+                    LocalDateTime dateEclosion = getDateEclosionFromObject(obj);
+                    return dateEclosion != null && dateEclosion.isBefore(LocalDateTime.now());
+                })
+                .collect(Collectors.toList());
+            
+            model.addAttribute("incubateursAvecDateFuture", incubateursAvecDateFuture);        
+
             model.addAttribute("tabIncubateur", tabIncubateur);        
             model.addAttribute("pseudo", pseudo);
             return "incubateur";
@@ -274,6 +287,22 @@ public class controllerVisuel {
             // Rediriger vers la page d'accueil si le pseudo n'est pas présent
             return "redirect:/";
         }
+    }
+
+    public LocalDateTime getDateEclosionFromObject(Object obj){
+        LocalDateTime dateTime = null;
+        if (obj instanceof Map) {
+            Map<?, ?> map = (Map<?, ?>) obj;
+            Object dateFinEclosionObj = map.get("dateFinEclosion");
+            String dateString = dateFinEclosionObj.toString();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+            dateTime = LocalDateTime.parse(dateString, formatter);
+
+        } else {
+            System.out.println("L'objet n'est pas un Map");
+        }
+        return dateTime;
+
     }
 
     @GetMapping("/compte")
