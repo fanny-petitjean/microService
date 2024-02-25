@@ -1,5 +1,6 @@
 package code.incubateuroeuf.controller;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,10 +26,20 @@ import code.incubateuroeuf.model.IncubateurOeuf;
 import code.incubateuroeuf.model.IncubateurOeufRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.amqp.core.Queue;
+
+
 
 @Controller
 @RequestMapping("") // Définissez le chemin de base pour toutes les méthodes du contrôleur
 public class controllerIncubateurOeuf {
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private Queue queue;
+
     @Autowired
     IncubateurOeufRepository incubateurOeufRepository;
 
@@ -61,6 +72,11 @@ public class controllerIncubateurOeuf {
         IncubateurOeuf incubateurOeuf = new IncubateurOeuf(idIncubateur,pseudo,idOeuf,dateEclosion);
         incubateurOeufRepository.save(incubateurOeuf);
         if(incubateurOeufRepository.existsById(incubateurOeuf.getId())){
+            // Envoyer le message après l'ajout de l'oeuf
+            String message = "Un oeuf est entrain d'éclore";
+            rabbitTemplate.convertAndSend(queue.getName(), message);
+            System.out.println(" [x] Sent '" + message + "'");
+            rabbitTemplate.convertAndSend(queue.getName(), message);
             return true;
         }else{
             return false;

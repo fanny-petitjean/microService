@@ -1,4 +1,4 @@
-/*package code.incubateuroeuf.queue;
+package code.boutique.queue;
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -14,4 +14,4 @@ public class Receiver {
     public void receiveMessage(String message) {
         System.out.println(" [x] Received '" + message + "'");
     }
-}*/
+}

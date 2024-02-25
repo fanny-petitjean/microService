@@ -75,7 +75,8 @@
         }
 
         function showAlert(message) {
-            location.reload()
+            console.log('Received message:', message);
+            //location.reload()
             alert(message)
         }
 
@@ -186,9 +187,6 @@
                     console.error('Erreur lors de l\'appel pour enlever l\'argent:', error);
                 });
         }
-
-
-
     </script>
 </body>
 </html>
